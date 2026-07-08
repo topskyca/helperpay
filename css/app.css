@@ -216,7 +216,8 @@ label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 5px
   cursor: pointer;
 }
 .pending-row:last-of-type { border-bottom: none; }
-.pending-row .btn.compact { width: 44px; padding: 8px 0; }
+.pending-row .btn.compact { width: auto; flex: none; }
+.pending-row [data-approve-log] { width: 44px; padding: 8px 0; }
 .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 12px; color: var(--muted); }
 .cal-legend .item { display: flex; align-items: center; gap: 5px; }
 

@@ -30,6 +30,8 @@ May/June 2026 payroll):
 | Rest day never offsets a statutory holiday | Each date stands on its own |
 | Ordinary leave on a working day | −1 day wage (half day → −½) |
 | One rest day per 7 days served | No rest day in the first week of employment (default on; toggle in Settings; per-date override in Calendar wins) |
+| Statutory holiday worked → day off owed | The law requires an alternative day off within 60 days (payment in lieu is prohibited, fine HK$50k). The Today tab tracks owed days; scheduling one adds a paid "day off in lieu" |
+| Statutory holidays in first 3 months | Day off required from day 1; Ordinance holiday *pay* starts after 3 months — monthly wage covers it, app pays from day one |
 | First / last month | Pro-rated: calendar days employed × daily wage |
 | Food allowance | Added monthly, pro-rated in partial months |
 

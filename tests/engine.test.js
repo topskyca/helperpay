@@ -285,6 +285,52 @@ test('statement text marks pending lines', () => {
   assert.ok(!text.includes('Full-day leave  −HK$167.67  (pending'));
 });
 
+console.log('# alternative day off owed for statutory-holiday work (EO: no payment in lieu)');
+test('a worked statutory holiday owes an alternative day off within 60 days', () => {
+  const logs = { '2026-06-19': { work: 1 } }; // Tuen Ng worked
+  const owed = E.owedAlternativeHolidays(baseConfig, logs, '2026-07-08');
+  assert.strictEqual(owed.length, 1);
+  assert.strictEqual(owed[0].date, '2026-06-19');
+  assert.strictEqual(owed[0].deadline, '2026-08-18'); // +60 days
+  assert.strictEqual(owed[0].scheduled, null);
+  assert.strictEqual(owed[0].overdue, false);
+});
+test('overdue when 60 days pass without a scheduled alternative', () => {
+  const logs = { '2026-06-19': { work: 1 } };
+  const owed = E.owedAlternativeHolidays(baseConfig, logs, '2026-08-19');
+  assert.strictEqual(owed[0].overdue, true);
+});
+test('an altFor entry in the holidays list satisfies the obligation', () => {
+  const cfg = Object.assign({}, baseConfig, {
+    holidays: baseConfig.holidays.concat({
+      date: '2026-07-03', name: 'Day off in lieu — Tuen Ng Festival (19 Jun)', altFor: '2026-06-19'
+    })
+  });
+  const logs = { '2026-06-19': { work: 1 } };
+  const owed = E.owedAlternativeHolidays(cfg, logs, '2026-09-01');
+  assert.strictEqual(owed[0].scheduled, '2026-07-03');
+  assert.strictEqual(owed[0].overdue, false);
+  // and the day off in lieu itself is a paid holiday: taking it costs nothing
+  const july = E.computeMonth(2026, 7, cfg, {});
+  assert.strictEqual(july.total, 5100);
+});
+test('a holiday taken (not worked) owes nothing', () => {
+  const logs = { '2026-06-19': { work: 0 } };
+  assert.strictEqual(E.owedAlternativeHolidays(baseConfig, logs).length, 0);
+});
+test('working the day off in lieu flags it as owed again', () => {
+  const cfg = Object.assign({}, baseConfig, {
+    holidays: baseConfig.holidays.concat({
+      date: '2026-07-03', name: 'Day off in lieu — Tuen Ng Festival (19 Jun)', altFor: '2026-06-19'
+    })
+  });
+  const logs = { '2026-06-19': { work: 1 }, '2026-07-03': { work: 1 } };
+  const owed = E.owedAlternativeHolidays(cfg, logs, '2026-07-08');
+  assert.strictEqual(owed.length, 2);
+  const second = owed.find(o => o.date === '2026-07-03');
+  assert.strictEqual(second.scheduled, null);
+});
+
 test('a synced substitute day is a plain holiday for the engine', () => {
   const cfg = Object.assign({}, baseConfig, {
     holidays: [{ date: '2026-05-25', name: 'The day following the Birthday of the Buddha', source: 'gov' }]

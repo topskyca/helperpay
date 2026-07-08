@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.3.3-beta';
+  const APP_VERSION = '0.4.0-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -273,6 +273,12 @@
         '<p class="muted small" style="margin-top:6px">Use this when the agency confirms a different rest-day date.</p>'
       : '';
 
+    const holidayHint = cls.holiday
+      ? '<p class="muted small mt">⚖️ If this statutory holiday is worked: extra pay is added to the statement, ' +
+        'and the law also requires an alternative day off within 60 days (cash cannot replace it). ' +
+        'The Today tab tracks owed days off.</p>'
+      : '';
+
     const approveBtn = !state.ui.helperMode && entry.status === 'pending'
       ? '<button class="btn mt" id="day-approve" style="background:var(--green)">✓ Approve ' +
         esc(state.config.helperName || 'helper') + '’s log</button>'
@@ -284,6 +290,7 @@
       '<div class="choice-list">' + choicesHtml + '</div>' +
       '<label>Note (optional)</label>' +
       '<input id="day-note" placeholder="e.g. agency confirmed, doctor visit…" value="' + esc(entry.note || '') + '">' +
+      holidayHint +
       restToggle +
       approveBtn +
       '<button class="btn' + (approveBtn ? ' secondary' : '') + ' mt" id="day-save">Save</button>'
@@ -517,6 +524,67 @@
   function monthLabel(key) {
     const p = key.split('-');
     return MONTHS[+p[1] - 1] + ' ' + p[0];
+  }
+
+  // ---------- alternative day off for statutory-holiday work ----------
+
+  // EO rule: working a statutory holiday requires an alternative day off
+  // within 60 days — cash in lieu is prohibited (fine HK$50,000).
+  function openScheduleAltSheet(owedItem) {
+    const ov = openSheet(
+      '<h2>Schedule day off in lieu</h2>' +
+      '<p class="muted mt">' + esc(state.config.helperName || 'Helper') + ' worked <b>' +
+      esc(owedItem.name) + '</b> on ' + esc(fmtDate(owedItem.date)) + '. ' +
+      'The law requires an alternative day off within 60 days (by ' + esc(fmtDate(owedItem.deadline)) + ') — ' +
+      'extra pay is welcome but cannot replace the day off.</p>' +
+      '<label>Day off in lieu</label>' +
+      '<input id="alt-date" type="date" min="' + esc(E.addDays(owedItem.date, -60)) + '" max="' + esc(owedItem.deadline) + '">' +
+      '<p class="muted small" style="margin-top:6px">Pick a normal working day within 60 days of the holiday. She takes that day off with full pay.</p>' +
+      '<button class="btn mt" id="alt-save">Schedule day off</button>'
+    );
+    ov.querySelector('#alt-save').onclick = () => {
+      const date = ov.querySelector('#alt-date').value;
+      if (!date) { toast('Pick a date'); return; }
+      if (date < E.addDays(owedItem.date, -60) || date > owedItem.deadline) {
+        toast('Must be within 60 days of the holiday'); return;
+      }
+      const cls = E.classifyDay(date, state.config);
+      if (cls.type !== 'normal') { toast('Pick a normal working day (not a rest day or holiday)'); return; }
+      state.config.holidays.push({
+        date: date,
+        name: 'Day off in lieu — ' + owedItem.name + ' (' + fmtDateShort(owedItem.date) + ')',
+        altFor: owedItem.date
+      });
+      state.config.holidays.sort((a, b) => (a.date < b.date ? -1 : 1));
+      saveConfig();
+      closeSheet(ov);
+      toast('Day off scheduled — ' + fmtDateShort(date) + ' ✓');
+      render();
+    };
+  }
+
+  function owedCardHtml() {
+    const owed = E.owedAlternativeHolidays(state.config, state.logs)
+      .filter(o => !o.scheduled);
+    if (!owed.length) return '';
+    const rows = owed.map((o, i) =>
+      '<div class="pending-row" style="cursor:default">' +
+      '<div class="grow"><b>' + esc(fmtDate(o.date)) + ' · ' + esc(o.name) + '</b>' +
+      '<div class="' + (o.overdue ? '' : 'muted') + ' small"' + (o.overdue ? ' style="color:var(--red);font-weight:700"' : '') + '>' +
+      (o.overdue ? 'OVERDUE — was due by ' : 'Day off due by ') + esc(fmtDate(o.deadline)) + '</div></div>' +
+      (!state.ui.helperMode
+        ? '<button class="btn compact" data-schedule-alt="' + i + '">Schedule</button>'
+        : '') +
+      '</div>').join('');
+    return '<div class="card">' +
+      '<h2>⚖️ ' + (state.ui.helperMode
+        ? 'Days off owed to you (' + owed.length + ')'
+        : 'Day off owed for holiday work (' + owed.length + ')') + '</h2>' +
+      rows +
+      '<p class="muted small mt">' + (state.ui.helperMode
+        ? 'You worked these statutory holidays — the law says you get another day off within 60 days, on top of any extra pay.'
+        : 'Working a statutory holiday needs 48-hour notice and an alternative day off within 60 days. Paying cash instead of the day off is prohibited (fine HK$50,000) — extra pay on top is fine and already in the statement.') +
+      '</p></div>';
   }
 
   // ---------- statutory holiday sync (official HK Gov 1823 calendar) ----------
@@ -780,10 +848,14 @@
       upcoming = '<div class="card"><h2>Coming up</h2>' + items.join('') + '</div>';
     }
 
-    return dayCard + pendingCard + summary + upcoming;
+    return dayCard + pendingCard + owedCardHtml() + summary + upcoming;
   }
 
   function bindToday() {
+    const owed = E.owedAlternativeHolidays(state.config, state.logs).filter(o => !o.scheduled);
+    $$('#view [data-schedule-alt]').forEach(b => {
+      b.onclick = () => openScheduleAltSheet(owed[+b.dataset.scheduleAlt]);
+    });
     $$('#view [data-approve-log]').forEach(b => {
       b.onclick = e => {
         e.stopPropagation();
@@ -1199,9 +1271,15 @@
       '• A rest day never offsets a statutory holiday — each date counts on its own.<br>' +
       '• A rest day and holiday on the same date count once, not twice.<br>' +
       '• First/last month is pro-rated by calendar days × daily wage.<br><br>' +
-      'Note: statutory holiday pay under the Ordinance formally starts after 3 months of service; ' +
-      'this app follows the common agency arrangement of paying them from day one (as your contract/agency confirms).<br><br>' +
-      'Reference: HK Labour Department, “A Concise Guide to the Employment Ordinance”.</p>' +
+      '<b>Statutory holidays — the official rules (Labour Department):</b><br>' +
+      '• The day off itself is required from day one, for every employee regardless of length of service.<br>' +
+      '• Statutory holiday <b>pay</b> under the Ordinance starts after 3 months of continuous contract. ' +
+      'For monthly-paid helpers the monthly wage covers these days anyway — this app treats them as paid from day one (the common contract/agency arrangement).<br>' +
+      '• A helper may work a statutory holiday only with 48 hours’ prior notice, and the employer <b>must grant an alternative day off within 60 days</b>. ' +
+      'The app tracks owed days off on the Today tab.<br>' +
+      '• <b>Paying cash instead of the day off is prohibited</b> — any form of payment in lieu of a statutory holiday is an offence (fine HK$50,000), ' +
+      'even with mutual agreement. Extra pay on top of the day off is voluntary and legal.<br><br>' +
+      'Reference: HK Labour Department, “A Concise Guide to the Employment Ordinance” and “FAQ on Statutory Holidays”.</p>' +
       '<a class="btn secondary compact mt" style="text-decoration:none" href="guide.html" target="_blank" rel="noopener">' +
       '📖 User guide · 使用指南</a>' +
       '<a class="btn secondary compact mt" style="text-decoration:none" href="' + WHATSAPP_URL + '" target="_blank" rel="noopener">' +

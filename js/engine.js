@@ -195,6 +195,45 @@
     };
   }
 
+  // ---------- alternative day off tracking (statutory holiday worked) ----------
+
+  /**
+   * Labour Department rules (FAQ on Statutory Holidays): an employee may work
+   * a statutory holiday (48h notice), but the employer MUST grant an
+   * alternative holiday within 60 days before or after — any payment in lieu
+   * is prohibited (fine HK$50,000). Extra pay on top is voluntary and legal.
+   *
+   * A worked holiday counts as "scheduled" when the holidays list contains an
+   * entry with altFor === that date (single source of truth — deleting the
+   * entry in Settings re-flags the day as owed).
+   */
+  function owedAlternativeHolidays(config, logs, asOf) {
+    asOf = asOf || todayStr();
+    const out = [];
+    const hs = config.holidays || [];
+    Object.keys(logs || {}).sort().forEach(ds => {
+      const entry = logs[ds];
+      if (!entry || !(entry.work > 0)) return;
+      if (!isEmployedOn(ds, config)) return;
+      const cls = classifyDay(ds, config);
+      if (!cls.holiday) return;
+      let scheduled = null;
+      for (let i = 0; i < hs.length; i++) {
+        if (hs[i].altFor === ds) { scheduled = hs[i]; break; }
+      }
+      const deadline = addDays(ds, 60);
+      out.push({
+        date: ds,
+        name: cls.holiday.name,
+        workedDays: entry.work,
+        deadline: deadline,
+        scheduled: scheduled ? scheduled.date : null,
+        overdue: !scheduled && asOf > deadline
+      });
+    });
+    return out;
+  }
+
   // ---------- plain-text statement (for WhatsApp / records) ----------
 
   function fmtMoney(x) {
@@ -259,7 +298,7 @@
     ymd, parseYmd, weekdayOf, daysInMonth, addDays, todayStr, monthKey,
     round2, dailyWage,
     classifyDay, defaultWork, describeType, isEmployedOn,
-    computeMonth, statementText, fmtMoney, fmtDays
+    computeMonth, owedAlternativeHolidays, statementText, fmtMoney, fmtDays
   };
 
   global.HSEngine = api;
