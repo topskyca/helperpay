@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.4.0-beta';
+  const APP_VERSION = '0.4.1-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -273,11 +273,19 @@
         '<p class="muted small" style="margin-top:6px">Use this when the agency confirms a different rest-day date.</p>'
       : '';
 
-    const holidayHint = cls.holiday
+    let holidayHint = cls.holiday
       ? '<p class="muted small mt">⚖️ If this statutory holiday is worked: extra pay is added to the statement, ' +
         'and the law also requires an alternative day off within 60 days (cash cannot replace it). ' +
         'The Today tab tracks owed days off.</p>'
       : '';
+    if (E.needsRestDaySubstitute(state.config, ds)) {
+      const sub = E.nextFreeDay(state.config, ds);
+      holidayHint += '<p class="muted small mt">⚖️ This statutory holiday falls on a rest day — ' +
+        'the law grants another holiday on the next free day.</p>' +
+        (!state.ui.helperMode
+          ? '<button class="btn secondary compact mt" id="add-sub-day">+ Add substitute holiday — ' + esc(fmtDate(sub)) + '</button>'
+          : '');
+    }
 
     const approveBtn = !state.ui.helperMode && entry.status === 'pending'
       ? '<button class="btn mt" id="day-approve" style="background:var(--green)">✓ Approve ' +
@@ -302,6 +310,23 @@
         approveLog(ds);
         closeSheet(ov);
         toast('Approved — ' + fmtDateShort(ds) + ' ✓');
+        render();
+      };
+    }
+
+    const subBtn = ov.querySelector('#add-sub-day');
+    if (subBtn) {
+      subBtn.onclick = () => {
+        const sub = E.nextFreeDay(state.config, ds);
+        state.config.holidays.push({
+          date: sub,
+          name: 'Substitute — ' + cls.holiday.name + ' (fell on rest day)',
+          substitute: true
+        });
+        state.config.holidays.sort((a, b) => (a.date < b.date ? -1 : 1));
+        saveConfig();
+        closeSheet(ov);
+        toast('Substitute holiday added — ' + fmtDateShort(sub) + ' ✓');
         render();
       };
     }
@@ -1278,7 +1303,11 @@
       '• A helper may work a statutory holiday only with 48 hours’ prior notice, and the employer <b>must grant an alternative day off within 60 days</b>. ' +
       'The app tracks owed days off on the Today tab.<br>' +
       '• <b>Paying cash instead of the day off is prohibited</b> — any form of payment in lieu of a statutory holiday is an offence (fine HK$50,000), ' +
-      'even with mutual agreement. Extra pay on top of the day off is voluntary and legal.<br><br>' +
+      'even with mutual agreement. Extra pay on top of the day off is voluntary and legal.<br>' +
+      '• If a statutory holiday falls on a rest day, another holiday must be granted on the next free day — ' +
+      'the app prefills these substitutes and offers a one-tap add when you change rest days.<br>' +
+      '• <b>Rest days are different from holidays:</b> rest-day work must be voluntary (compelling it is an offence, fine HK$50,000), ' +
+      'but compensation is by mutual agreement — extra pay (as this app calculates) or a substituted rest day are both lawful.<br><br>' +
       'Reference: HK Labour Department, “A Concise Guide to the Employment Ordinance” and “FAQ on Statutory Holidays”.</p>' +
       '<a class="btn secondary compact mt" style="text-decoration:none" href="guide.html" target="_blank" rel="noopener">' +
       '📖 User guide · 使用指南</a>' +

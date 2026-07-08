@@ -234,6 +234,30 @@
     return out;
   }
 
+  // ---------- rest-day / statutory-holiday collision (FDH guide Q4.8) ----------
+
+  // "If the statutory holiday falls on a rest day, a holiday should be granted
+  // on the next day which is not a statutory holiday or an alternative/
+  // substituted holiday or a rest day."
+  function nextFreeDay(config, dateStr) {
+    let d = addDays(dateStr, 1);
+    for (let i = 0; i < 30; i++) { // hard stop; a free day always exists well before this
+      if (classifyDay(d, config).type === 'normal') return d;
+      d = addDays(d, 1);
+    }
+    return d;
+  }
+
+  // A rest+holiday date needs a substitute unless some holiday entry already
+  // sits within the following 7 days (the prefilled/gov-synced substitutes all
+  // do). Heuristic: dense real-holiday clusters can mask it, but errs quiet.
+  function needsRestDaySubstitute(config, dateStr) {
+    const cls = classifyDay(dateStr, config);
+    if (cls.type !== 'rest+holiday') return false;
+    const limit = addDays(dateStr, 7);
+    return !(config.holidays || []).some(h => h.date > dateStr && h.date <= limit);
+  }
+
   // ---------- plain-text statement (for WhatsApp / records) ----------
 
   function fmtMoney(x) {
@@ -298,7 +322,8 @@
     ymd, parseYmd, weekdayOf, daysInMonth, addDays, todayStr, monthKey,
     round2, dailyWage,
     classifyDay, defaultWork, describeType, isEmployedOn,
-    computeMonth, owedAlternativeHolidays, statementText, fmtMoney, fmtDays
+    computeMonth, owedAlternativeHolidays, nextFreeDay, needsRestDaySubstitute,
+    statementText, fmtMoney, fmtDays
   };
 
   global.HSEngine = api;

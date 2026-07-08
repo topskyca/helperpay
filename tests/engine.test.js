@@ -331,6 +331,33 @@ test('working the day off in lieu flags it as owed again', () => {
   assert.strictEqual(second.scheduled, null);
 });
 
+console.log('# rest-day + statutory-holiday collision (FDH guide Q4.8)');
+test('nextFreeDay skips rest days and existing holiday entries', () => {
+  // 24 May 2026: Sunday rest + Buddha's Birthday; 25 May is already a
+  // substitute entry → next free day per the EO walk is Tuesday 26 May
+  assert.strictEqual(E.nextFreeDay(baseConfig, '2026-05-24'), '2026-05-26');
+  // plain Saturday → Sunday is rest → Monday
+  assert.strictEqual(E.nextFreeDay(baseConfig, '2026-08-01'), '2026-08-03');
+});
+test('prefilled substitutes satisfy the collision rule (no nudge)', () => {
+  assert.strictEqual(E.needsRestDaySubstitute(baseConfig, '2026-05-24'), false);
+});
+test('a one-off rest-day override colliding with a holiday needs a substitute', () => {
+  // employer marks Thursday 1 Oct 2026 (National Day) as a one-off rest day
+  const cfg = Object.assign({}, baseConfig, { restDayOverrides: { '2026-10-01': true } });
+  assert.strictEqual(E.needsRestDaySubstitute(cfg, '2026-10-01'), true);
+  assert.strictEqual(E.nextFreeDay(cfg, '2026-10-01'), '2026-10-02');
+  // adding the substitute clears the nudge
+  const cfg2 = Object.assign({}, cfg, {
+    holidays: cfg.holidays.concat({ date: '2026-10-02', name: 'Substitute — National Day (fell on rest day)', substitute: true })
+  });
+  assert.strictEqual(E.needsRestDaySubstitute(cfg2, '2026-10-01'), false);
+});
+test('non-collision days never need a substitute', () => {
+  assert.strictEqual(E.needsRestDaySubstitute(baseConfig, '2026-06-19'), false); // Friday holiday
+  assert.strictEqual(E.needsRestDaySubstitute(baseConfig, '2026-08-02'), false); // plain Sunday
+});
+
 test('a synced substitute day is a plain holiday for the engine', () => {
   const cfg = Object.assign({}, baseConfig, {
     holidays: [{ date: '2026-05-25', name: 'The day following the Birthday of the Buddha', source: 'gov' }]
