@@ -130,7 +130,21 @@ The tests reproduce the household's independently verified May 2026
 
 - `localStorage` — config, day logs, payments, adjustments
 - `IndexedDB` — payment screenshots (auto-resized to ≤1400px JPEG)
-- Nothing ever leaves the device. Backup/restore is a single JSON file.
+- Salary records never leave the device. Backup/restore is a single JSON file.
+
+## Usage analytics (GoatCounter)
+
+To measure adoption, the app can report anonymous usage to a free
+[GoatCounter](https://www.goatcounter.com) dashboard: visitor counts,
+device/browser, country, visit frequency, plus four coarse events
+(`setup-completed`, `day-logged`, `payment-recorded`, `payment-approved`).
+Pings contain no app data — no names, wages, or records — and GoatCounter
+stores no raw IP addresses. A disclosure line appears in Settings → About.
+
+Setup: create a free account at goatcounter.com, pick a site code (e.g.
+`helperpay`), then set `CODE = 'helperpay'` in [js/analytics.js](js/analytics.js)
+and redeploy. Empty `CODE` disables analytics entirely; localhost is always
+ignored. The report lives at `https://<code>.goatcounter.com`.
 
 ## Roadmap
 

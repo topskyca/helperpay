@@ -15,8 +15,11 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.3.1-beta';
+  const APP_VERSION = '0.3.2-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
+  const WHATSAPP_DISPLAY = '+852 5229 5286';
+  const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
+    encodeURIComponent('Hi! I’m using HelperPay — ');
 
   const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const WEEKDAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -201,6 +204,7 @@
       }
     }
     saveLogs();
+    HSTrack('day-logged');
   }
 
   // Employer approval of a helper-logged day. Default-valued entries (she
@@ -414,6 +418,7 @@
       await attachFiles(payment, ov.querySelector('#pay-files').files);
       state.payments.push(payment);
       savePayments();
+      HSTrack('payment-recorded');
       closeSheet(ov);
       toast('Payment recorded — ask ' + (state.config.helperName || 'helper') + ' to approve');
       render();
@@ -448,6 +453,7 @@
       payment.status = 'approved';
       payment.approval = { name: name, at: new Date().toISOString(), pinVerified: needPin };
       savePayments();
+      HSTrack('payment-approved');
       closeSheet(ov);
       toast('Approved ✓ Thank you!');
       render();
@@ -632,6 +638,8 @@
       '<button class="btn mt" id="su-create">' + (state.addingProfile ? 'Add helper' : 'Start tracking') + '</button>' +
       (state.addingProfile ? '<button class="btn ghost mt" id="su-cancel">Cancel</button>' : '') +
       '<p class="muted small mt">2026 Hong Kong statutory holidays are prefilled automatically. Everything can be changed later in Settings.</p>' +
+      (state.addingProfile ? '' :
+        '<p class="muted small mt">Questions? <a href="' + WHATSAPP_URL + '" target="_blank" rel="noopener" style="color:var(--accent)">WhatsApp ' + WHATSAPP_DISPLAY + '</a></p>') +
       '</div>';
   }
 
@@ -676,6 +684,7 @@
       saveLogs();
       savePayments();
       saveAdjustments();
+      HSTrack('setup-completed');
       toast(state.config.helperName ? 'Welcome, ' + state.config.helperName + '! 🎉' : 'Welcome! 🎉');
       render();
     };
@@ -1193,8 +1202,12 @@
       'Note: statutory holiday pay under the Ordinance formally starts after 3 months of service; ' +
       'this app follows the common agency arrangement of paying them from day one (as your contract/agency confirms).<br><br>' +
       'Reference: HK Labour Department, “A Concise Guide to the Employment Ordinance”.</p>' +
+      '<a class="btn secondary compact mt" style="text-decoration:none" href="' + WHATSAPP_URL + '" target="_blank" rel="noopener">' +
+      '💬 WhatsApp the developer — ' + WHATSAPP_DISPLAY + '</a>' +
       '<p class="muted small mt">HelperPay v' + APP_VERSION + ' · ' +
-      '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=HelperPay%20feedback" style="color:var(--accent)">Send feedback</a></p>' +
+      '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=HelperPay%20feedback" style="color:var(--accent)">Email feedback</a></p>' +
+      '<p class="muted small mt">The app reports anonymous usage counts (app opens, device type, country) so the developer can see adoption. ' +
+      'Your names, wages and records never leave this phone.</p>' +
       '</div>';
 
     return html;
