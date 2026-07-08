@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.labour.gov.hk)",
+      "WebFetch(domain:www.helperplace.com)",
+      "Bash(node tests/engine.test.js)",
+      "Bash(curl -sI \"https://www.1823.gov.hk/common/ical/en.json\")",
+      "Bash(curl -s \"https://www.1823.gov.hk/common/ical/en.json\")",
+      "Bash(curl -sI -H \"Origin: https://example.com\" \"https://www.1823.gov.hk/common/ical/en.json\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -sI -H 'Origin: https://example.com' https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json)",
+      "Bash(curl -s https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json)",
+      "Bash(curl -s 'https://api.data.gov.hk/v1/historical-archive/list-file-versions?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json&start=20260101&end=20260707')",
+      "Bash(curl -s 'https://api.data.gov.hk/v1/historical-archive/list-file-versions?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json&start=20260101&end=20260706')",
+      "Bash(curl -s -o /dev/null -D - 'https://api.data.gov.hk/v1/historical-archive/list-file-versions?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json&start=20260101&end=20260706' -H 'Origin: https://example.com')",
+      "Bash(curl -s -D /tmp/hdrs2.txt 'https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json&time=20260518-1117' -H 'Origin: https://example.com' -o /tmp/feed2.json)",
+      "Read(//tmp/**)",
+      "Bash(curl -sL -D /tmp/hdrs3.txt 'https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fwww.1823.gov.hk%2Fcommon%2Fical%2Fen.json&time=20260518-1117' -H 'Origin: https://example.com' -o /tmp/feed3.json)",
+      "Bash(curl -s http://localhost:4173/js/store.js)",
+      "Bash(curl -sI http://localhost:4173/js/store.js)",
+      "Bash(lsof -nP -iTCP:4173 -sTCP:LISTEN)",
+      "Bash(lsof -nP -iTCP:4173)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git -c user.name=Chen -c user.email=admin@adflow.vip commit -m 'HelperPay v0.3.0-beta — HK domestic helper salary tracker \\(PWA\\) *)"
+    ]
+  }
+}
