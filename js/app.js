@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.3.0-beta';
+  const APP_VERSION = '0.3.1-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
 
   const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -618,7 +618,7 @@
       (adding
         ? '<div class="hero"><div class="logo">👩‍👩‍👧</div><h1>Add another helper</h1>' +
           '<p>She gets her own calendar, salary statements,<br>payments and PIN.</p></div>'
-        : '<div class="hero"><div class="logo">🧧</div><h1>HelperPay</h1>' +
+        : '<div class="hero"><img class="logo-img" src="icon.svg" alt="HelperPay"><h1>HelperPay</h1>' +
           '<p>Salary tracking for your domestic helper,<br>the Hong Kong Employment Ordinance way.</p></div>') +
       '<div class="card">' +
       '<label>Helper\'s name</label><input id="su-helper" placeholder="e.g. Maria">' +

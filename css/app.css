@@ -314,6 +314,7 @@ label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 5px
 
 .hero { text-align: center; padding: 26px 10px 6px; }
 .hero .logo { font-size: 46px; }
+.hero .logo-img { width: 76px; height: 76px; border-radius: 18px; box-shadow: var(--shadow); }
 .hero h1 { font-size: 23px; letter-spacing: -.4px; margin-top: 8px; }
 .hero p { color: var(--muted); font-size: 14px; margin-top: 6px; }
 

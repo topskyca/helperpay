@@ -23,7 +23,12 @@
       "Bash(lsof -nP -iTCP:4173)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git -c user.name=Chen -c user.email=admin@adflow.vip commit -m 'HelperPay v0.3.0-beta — HK domestic helper salary tracker \\(PWA\\) *)"
+      "Bash(git -c user.name=Chen -c user.email=admin@adflow.vip commit -m 'HelperPay v0.3.0-beta — HK domestic helper salary tracker \\(PWA\\) *)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(git -c user.name=Chen -c user.email=admin@adflow.vip commit -m 'Replace red-pocket emoji with app icon on welcome screen \\(v0.3.1-beta\\) *)",
+      "Bash(git push *)"
     ]
   }
 }
