@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.3.2-beta';
+  const APP_VERSION = '0.3.3-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -1202,6 +1202,8 @@
       'Note: statutory holiday pay under the Ordinance formally starts after 3 months of service; ' +
       'this app follows the common agency arrangement of paying them from day one (as your contract/agency confirms).<br><br>' +
       'Reference: HK Labour Department, “A Concise Guide to the Employment Ordinance”.</p>' +
+      '<a class="btn secondary compact mt" style="text-decoration:none" href="guide.html" target="_blank" rel="noopener">' +
+      '📖 User guide · 使用指南</a>' +
       '<a class="btn secondary compact mt" style="text-decoration:none" href="' + WHATSAPP_URL + '" target="_blank" rel="noopener">' +
       '💬 WhatsApp the developer — ' + WHATSAPP_DISPLAY + '</a>' +
       '<p class="muted small mt">HelperPay v' + APP_VERSION + ' · ' +

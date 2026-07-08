@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b6e4f">
+  <title>HelperPay — User Guide 使用指南</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #f4f6f9; --card: #ffffff; --text: #1a2233; --muted: #66718a;
+      --line: #e3e8f0; --accent: #0b6e4f; --accent-soft: #e2f3ec;
+      --blue: #2563eb; --blue-soft: #e4edff; --amber: #b45309; --amber-soft: #fdeeda;
+      --shadow: 0 1px 3px rgba(20,30,55,.08), 0 4px 14px rgba(20,30,55,.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12161f; --card: #1b2130; --text: #e8ecf4; --muted: #98a3ba;
+        --line: #2a3245; --accent: #3dbd8e; --accent-soft: #17352a;
+        --blue: #6c9bff; --blue-soft: #1c2947; --amber: #ffb45e; --amber-soft: #3a2a14;
+        --shadow: 0 1px 3px rgba(0,0,0,.4);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Microsoft JhengHei", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+    /* language switching — !important so it beats any display set by layout rules */
+    [data-lang="en"] .zh { display: none !important; }
+    [data-lang="zh"] .en { display: none !important; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--card); border-bottom: 1px solid var(--line);
+      padding: calc(10px + env(safe-area-inset-top,0px)) 16px 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { font-weight: 800; font-size: 18px; }
+    .brand span { color: var(--accent); }
+    .lang-toggle { display: flex; gap: 6px; }
+    .lang-toggle button {
+      font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+      padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line);
+      background: transparent; color: var(--muted);
+    }
+    .lang-toggle button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    main { max-width: 640px; margin: 0 auto; padding: 20px 16px 60px; }
+    .hero { text-align: center; padding: 26px 8px 10px; }
+    .hero img { width: 84px; height: 84px; border-radius: 20px; box-shadow: var(--shadow); }
+    .hero h1 { font-size: 26px; letter-spacing: -.4px; margin-top: 12px; }
+    .hero p { color: var(--muted); margin-top: 8px; font-size: 15px; }
+    .cta {
+      display: inline-block; margin-top: 18px; padding: 14px 30px;
+      background: var(--accent); color: #fff; text-decoration: none;
+      font-weight: 800; font-size: 16px; border-radius: 14px;
+    }
+    .cta-sub { display: block; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+
+    .card {
+      background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+      padding: 20px; margin-top: 18px;
+    }
+    .card h2 { font-size: 19px; margin-bottom: 12px; letter-spacing: -.2px; }
+    .card h3 { font-size: 15px; margin: 16px 0 6px; }
+    .card p, .card li { font-size: 14.5px; color: var(--text); }
+    .card .muted, .muted { color: var(--muted); }
+    ul, ol { padding-left: 22px; }
+    li { margin: 7px 0; }
+    li b { color: var(--text); }
+
+    .benefit { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    .benefit:last-child { border-bottom: none; }
+    .benefit .ico { font-size: 22px; line-height: 1.3; }
+    .benefit .t b { display: block; font-size: 15px; }
+    .benefit .t span { font-size: 13.5px; color: var(--muted); }
+
+    .step { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+    .step:last-child { border-bottom: none; }
+    .step .n {
+      flex: none; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent-soft); color: var(--accent);
+      font-weight: 800; display: flex; align-items: center; justify-content: center;
+    }
+    .step .t b { display: block; font-size: 15px; margin-bottom: 2px; }
+    .step .t { font-size: 14px; color: var(--muted); }
+
+    .privacy { border: 2px solid var(--accent); }
+    .privacy h2 { color: var(--accent); }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+    .pbadge {
+      font-size: 12.5px; font-weight: 700; padding: 6px 12px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+    }
+    .note {
+      background: var(--amber-soft); color: var(--amber);
+      border-radius: 12px; padding: 12px 14px; font-size: 13.5px; font-weight: 600; margin-top: 12px;
+    }
+    .faq-q { font-weight: 800; font-size: 15px; margin-top: 14px; }
+    .faq-a { font-size: 14px; color: var(--muted); margin-top: 3px; }
+    .contact-btn {
+      display: block; text-align: center; margin-top: 14px; padding: 13px;
+      border: 1.5px solid var(--accent); color: var(--accent); border-radius: 12px;
+      text-decoration: none; font-weight: 700; font-size: 15px;
+    }
+    footer { text-align: center; margin-top: 26px; font-size: 12.5px; color: var(--muted); }
+    footer a { color: var(--accent); }
+    .disclaimer { font-size: 12px; color: var(--muted); margin-top: 14px; }
+  </style>
+</head>
+<body data-lang="en">
+  <header>
+    <div class="brand">Helper<span>Pay</span> <span style="color:var(--muted);font-weight:600;font-size:13px">Guide</span></div>
+    <div class="lang-toggle">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-zh" onclick="setLang('zh')">中文</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <img src="icon.svg" alt="HelperPay">
+      <h1>HelperPay</h1>
+      <p class="en">Salary tracking for your domestic helper — calculated the Hong Kong Employment Ordinance way.<br>Free · Private · No sign-up</p>
+      <p class="zh">為你的外傭準確計糧 — 依照香港《僱傭條例》方式計算。<br>免費 · 私隱至上 · 毋須註冊</p>
+      <a class="cta" href="https://topskyca.github.io/helperpay/">
+        <span class="en">Open HelperPay</span><span class="zh">開啟 HelperPay</span>
+      </a>
+      <span class="cta-sub en">Then “Add to Home Screen” to install it like an app (see Step 2 below).</span>
+      <span class="cta-sub zh">然後「加至主畫面」，就像手機 App 一樣使用（見下面第 2 步）。</span>
+    </div>
+
+    <!-- why -->
+    <div class="card">
+      <h2 class="en">Why employers love it</h2>
+      <h2 class="zh">點解僱主都喜歡用</h2>
+
+      <div class="benefit"><div class="ico">🧮</div><div class="t">
+        <b class="en">Accurate, the Labour Department way</b>
+        <b class="zh">依足勞工處方式計算</b>
+        <span class="en">Daily wage = monthly wage × 12 ÷ 365, first month pro-rated by actual days. Hand-made spreadsheets get this wrong easily — this app was built after real spreadsheet mistakes cost real money.</span>
+        <span class="zh">日薪 = 月薪 × 12 ÷ 365，首月按實際日數比例計算。自製 Excel 好容易計錯 — 呢個 App 正正係因為試過計錯糧、蝕過錢先開發出來。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">✨</div><div class="t">
+        <b class="en">Almost nothing to do daily</b>
+        <b class="zh">日常幾乎唔使做嘢</b>
+        <span class="en">Normal working days count automatically. You only log the exceptions: leave, half-days, or work on a rest day / holiday.</span>
+        <span class="zh">正常工作日自動計算，只需記錄例外情況：放假、半日假、或者休息日／假期返工。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">📖</div><div class="t">
+        <b class="en">Handles the tricky rules</b>
+        <b class="zh">處理最易出錯的細節</b>
+        <span class="en">Rest days are paid and never deducted. Working a rest day or statutory holiday adds a full day's wage (half day adds half). A rest day can't offset a statutory holiday. No rest day in the first 7 days. Substitute holidays included.</span>
+        <span class="zh">休息日有薪，唔會扣人工；休息日或法定假日返工加一日人工（半日加半日）；休息日不能用來抵銷法定假日；首 7 日未有例假；補假都計埋。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">🤝</div><div class="t">
+        <b class="en">Both sides sign off — no more disputes</b>
+        <b class="zh">雙向確認 — 減少爭拗</b>
+        <span class="en">Days your helper logs need your approval. Payments you record need her confirmation (with your FPS screenshot attached). Every entry keeps who did what, and when.</span>
+        <span class="zh">工人姐姐記錄的日子要僱主批准先生效；僱主出糧後，由外傭親自按「確認收款」（可附 FPS 轉帳截圖）。每一項紀錄都寫明邊個、幾時做過乜。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">💬</div><div class="t">
+        <b class="en">One-tap salary statement</b>
+        <b class="zh">一鍵複製糧單</b>
+        <span class="en">A clear monthly breakdown — base pay, extra work, leave, adjustments — ready to copy straight into WhatsApp.</span>
+        <span class="zh">每月糧單清清楚楚 — 底薪、加班、請假、調整 — 一鍵複製，直接貼上 WhatsApp。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">📅</div><div class="t">
+        <b class="en">Official holidays, auto-updated</b>
+        <b class="zh">法定假日自動更新</b>
+        <span class="en">Hong Kong statutory holidays sync automatically from the government's official calendar (data.gov.hk) — including next year's dates when published.</span>
+        <span class="zh">香港法定假日自動同步政府官方日曆（data.gov.hk），下年度日期一公佈就自動加入。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">👩‍👩‍👧</div><div class="t">
+        <b class="en">More than one helper? No problem</b>
+        <b class="zh">請多過一位外傭？無問題</b>
+        <span class="en">Add extra helpers in Settings — each gets her own calendar, statements, payments and PIN.</span>
+        <span class="zh">在 Settings 加入更多外傭 — 每位都有獨立的日曆、糧單、出糧紀錄同 PIN。</span>
+      </div></div>
+
+      <div class="benefit"><div class="ico">📱</div><div class="t">
+        <b class="en">Works like a real app, even offline</b>
+        <b class="zh">如同真正手機 App，離線都用到</b>
+        <span class="en">Add it to your home screen once — it opens full-screen and works without internet.</span>
+        <span class="zh">加至主畫面一次，之後全螢幕開啟，無網絡都照用。</span>
+      </div></div>
+    </div>
+
+    <!-- get started -->
+    <div class="card">
+      <h2 class="en">Get started in 3 minutes</h2>
+      <h2 class="zh">3 分鐘上手</h2>
+
+      <div class="step"><div class="n">1</div><div class="t">
+        <b class="en">Open the app link</b><b class="zh">開啟應用程式連結</b>
+        <span class="en">On iPhone use <b>Safari</b>; on Android use <b>Chrome</b>: <br>topskyca.github.io/helperpay</span>
+        <span class="zh">iPhone 請用 <b>Safari</b>；Android 請用 <b>Chrome</b> 開啟：<br>topskyca.github.io/helperpay</span>
+      </div></div>
+
+      <div class="step"><div class="n">2</div><div class="t">
+        <b class="en">Add to Home Screen</b><b class="zh">加至主畫面</b>
+        <span class="en">iPhone: tap Share <b>⬆︎</b> → “Add to Home Screen”.<br>Android: menu <b>⋮</b> → “Add to Home screen” / “Install”.</span>
+        <span class="zh">iPhone：按分享 <b>⬆︎</b> → 「加至主畫面」。<br>Android：按選單 <b>⋮</b> → 「加至主畫面」／「安裝」。</span>
+      </div></div>
+
+      <div class="step"><div class="n">3</div><div class="t">
+        <b class="en">Set up once</b><b class="zh">一次過設定</b>
+        <span class="en">Helper's name, monthly wage (e.g. $5,100), food allowance ($0 if food is provided), first day of work, weekly rest day. Done.</span>
+        <span class="zh">輸入外傭姓名、月薪（例如 $5,100）、食物津貼（包食就填 0）、開工日期、每週休息日。搞掂。</span>
+      </div></div>
+
+      <div class="step"><div class="n">4</div><div class="t">
+        <b class="en">Log only the exceptions</b><b class="zh">只記錄例外情況</b>
+        <span class="en">Tap a day on the calendar when something differs: leave, half-day, or worked on a rest day / holiday. Everything else counts automatically.</span>
+        <span class="zh">有特別情況先至喺日曆撳一下：請假、半日假、或者休息日／假期返工。其他日子自動計算。</span>
+      </div></div>
+
+      <div class="step"><div class="n">5</div><div class="t">
+        <b class="en">Payday</b><b class="zh">出糧日</b>
+        <span class="en">Salary tab → check the statement → pay by FPS → “Record payment” with a screenshot → hand the phone to your helper → she taps “I confirm I received this payment”.</span>
+        <span class="zh">去 Salary → 核對糧單 → FPS 過數 → 「Record payment」上載截圖 → 將手機交給工人姐姐 → 佢親自按「確認收款」。</span>
+      </div></div>
+    </div>
+
+    <!-- two modes -->
+    <div class="card">
+      <h2 class="en">One phone, two modes</h2>
+      <h2 class="zh">一部手機，兩種模式</h2>
+      <p class="en">Tap the button at the top-right corner to switch:</p>
+      <p class="zh">按右上角按鈕切換：</p>
+      <ul>
+        <li><span class="en"><b>🔑 Employer mode</b> — settings, statements, payments, approving her logs.</span>
+            <span class="zh"><b>🔑 僱主模式</b> — 設定、糧單、出糧、批准工人姐姐的記錄。</span></li>
+        <li><span class="en"><b>👩 Helper mode</b> — she logs her days with three big buttons and confirms payments. Settings and money-editing are hidden.</span>
+            <span class="zh"><b>👩 外傭模式</b> — 工人姐姐用三個大掣記錄返工／放假，以及確認收款。設定同金錢修改功能會隱藏。</span></li>
+      </ul>
+      <p class="muted en" style="margin-top:10px">Set two optional PINs in Settings: your PIN stops her leaving helper mode; her PIN means only she can confirm payments — protection for both sides.</p>
+      <p class="muted zh" style="margin-top:10px">可在 Settings 設定兩組 PIN：僱主 PIN 防止離開外傭模式；外傭 PIN 代表只有佢本人先可以確認收款 — 雙方都有保障。</p>
+    </div>
+
+    <!-- privacy -->
+    <div class="card privacy">
+      <h2 class="en">🔒 Your privacy — the straight answer</h2>
+      <h2 class="zh">🔒 私隱問題 — 直接答你</h2>
+      <div class="badge-row">
+        <span class="pbadge en">No account</span><span class="pbadge zh">毋須帳號</span>
+        <span class="pbadge en">No server</span><span class="pbadge zh">沒有伺服器</span>
+        <span class="pbadge en">No cloud database</span><span class="pbadge zh">沒有雲端資料庫</span>
+        <span class="pbadge en">Open source</span><span class="pbadge zh">開放源碼</span>
+      </div>
+      <ul>
+        <li><span class="en"><b>Everything stays on your own phone.</b> Wages, names, work records, payment screenshots — stored only in your phone's browser storage. There is no server to send them to.</span>
+            <span class="zh"><b>所有資料只儲存在你自己的手機。</b>薪金、姓名、工作紀錄、轉帳截圖 — 全部只存在你手機內。根本沒有伺服器可以上傳。</span></li>
+        <li><span class="en"><b>The developer cannot see your data.</b> Not your helper's name, not her wage, not a single record. The only thing reported is anonymous usage counts (app opens, device type, country) so we know people are using it.</span>
+            <span class="zh"><b>開發者完全看不到你的資料。</b>外傭姓名、薪金、任何紀錄都看不到。App 只會回報匿名使用統計（開啟次數、裝置類型、國家／地區），讓我們知道有幾多人使用。</span></li>
+        <li><span class="en"><b>You hold the backup.</b> Settings → Export backup gives you one file with everything — keep it in your own cloud drive. Moving to a new phone is import, done.</span>
+            <span class="zh"><b>備份由你自己保管。</b>Settings → Export backup 會產生一個包含所有資料的檔案 — 存入你自己的雲端硬碟。換新手機時 Import 返就得。</span></li>
+        <li><span class="en"><b>Don't just trust us — check.</b> The full source code is public on GitHub (github.com/topskyca/helperpay). Anyone technical can verify these claims.</span>
+            <span class="zh"><b>唔使單靠信我哋 — 可以查證。</b>全部程式碼公開於 GitHub（github.com/topskyca/helperpay），識程式的朋友可以親自核實以上講法。</span></li>
+      </ul>
+      <div class="note">
+        <span class="en">⚠️ Because data lives only on your phone: export a backup after you have real records, and open the app at least weekly. The app reminds you too.</span>
+        <span class="zh">⚠️ 正因為資料只在你手機：有實際紀錄後請匯出備份，並最少每星期開啟一次 App。App 都會提醒你。</span>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+      <h2 class="en">FAQ</h2>
+      <h2 class="zh">常見問題</h2>
+
+      <div class="faq-q en">Is it free?</div>
+      <div class="faq-q zh">收唔收費？</div>
+      <div class="faq-a en">Completely free during beta. If it becomes an official product there may be a small fee later — beta users will be told well in advance.</div>
+      <div class="faq-a zh">Beta 測試期間完全免費。如果日後推出正式版可能會收取少量費用 — 屆時會提早通知測試用戶。</div>
+
+      <div class="faq-q en">What if my rest-day or holiday arrangement is different?</div>
+      <div class="faq-q zh">我同姐姐的休息日／假期安排唔同點算？</div>
+      <div class="faq-a en">Everything is adjustable: the weekly rest day, individual dates (tap any day on the calendar), the holiday list, and the first-week rule. If something doesn't fit, WhatsApp us — that's exactly the feedback we want.</div>
+      <div class="faq-a zh">全部可以自訂：每週休息日、個別日子（喺日曆撳一下就改到）、假期清單、首週例假規則。如果有安排配合唔到，請 WhatsApp 我哋 — 呢啲正正係我哋想收集嘅意見。</div>
+
+      <div class="faq-q en">Can my helper use her own phone?</div>
+      <div class="faq-q zh">工人姐姐可唔可以用自己手機？</div>
+      <div class="faq-a en">For now the household shares one phone (helper mode makes that safe). A version with separate logins and sync between phones is on the roadmap.</div>
+      <div class="faq-a zh">現階段一家共用一部手機（外傭模式確保安全）。獨立登入、兩部手機同步的版本已在開發計劃之中。</div>
+
+      <div class="faq-q en">I changed phones — how do I move my data?</div>
+      <div class="faq-q zh">換咗手機，資料點搬？</div>
+      <div class="faq-a en">Old phone: Settings → Export backup (send the file to yourself). New phone: install the app → Settings → Import backup.</div>
+      <div class="faq-a zh">舊手機：Settings → Export backup（將檔案傳給自己）。新手機：安裝 App → Settings → Import backup。</div>
+
+      <div class="faq-q en">Is the calculation really correct?</div>
+      <div class="faq-q zh">計算真係準確？</div>
+      <div class="faq-a en">The salary engine has an automated test suite that reproduces independently verified real payroll cases to the cent, and the rules follow the Labour Department's guides. You can always check the breakdown line by line in the statement.</div>
+      <div class="faq-a zh">計糧引擎有自動測試，可以一仙不差地重現經獨立核實的真實糧單，規則依照勞工處指引。糧單每一項都列得清清楚楚，隨時可以逐行核對。</div>
+    </div>
+
+    <!-- contact -->
+    <div class="card">
+      <h2 class="en">Questions or ideas?</h2>
+      <h2 class="zh">有疑問或建議？</h2>
+      <p class="en">We read everything — your feedback shapes the app.</p>
+      <p class="zh">我哋每個訊息都會睇 — 你嘅意見會直接影響 App 嘅發展。</p>
+      <a class="contact-btn" href="https://wa.me/85252295286?text=Hi!%20I%E2%80%99m%20using%20HelperPay%20%E2%80%94%20" target="_blank" rel="noopener">
+        💬 WhatsApp +852 5229 5286
+      </a>
+      <a class="contact-btn" href="mailto:admin@adflow.vip?subject=HelperPay%20feedback">
+        ✉️ admin@adflow.vip
+      </a>
+    </div>
+
+    <footer>
+      <p><a href="https://topskyca.github.io/helperpay/"><span class="en">Open HelperPay</span><span class="zh">開啟 HelperPay</span></a> ·
+         <a href="https://github.com/topskyca/helperpay" target="_blank" rel="noopener">GitHub</a></p>
+      <p class="disclaimer en">HelperPay is a record-keeping tool, not legal advice. For employment-law questions, refer to your contract and the HK Labour Department ("A Concise Guide to the Employment Ordinance").</p>
+      <p class="disclaimer zh">HelperPay 是記錄及計算工具，並非法律意見。有關僱傭法例問題，請以你的合約及香港勞工處《僱傭條例簡明指南》為準。</p>
+    </footer>
+  </main>
+
+  <script>
+    function setLang(lang) {
+      document.body.dataset.lang = lang;
+      document.documentElement.lang = lang === 'zh' ? 'zh-Hant-HK' : 'en';
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+      try { localStorage.setItem('helperpay.guideLang', lang); } catch (e) {}
+    }
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('helperpay.guideLang'); } catch (e) {}
+      if (saved) { setLang(saved); return; }
+      var nav = (navigator.language || '').toLowerCase();
+      if (nav.indexOf('zh') === 0) setLang('zh');
+    })();
+  </script>
+</body>
+</html>
