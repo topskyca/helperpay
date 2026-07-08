@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  var CODE = ''; // GoatCounter site code — set to enable, '' disables
+  var CODE = 'helperpay'; // GoatCounter site code — set to enable, '' disables
 
   // no-op fallback so app code can always call HSTrack(...)
   window.HSTrack = function () {};
