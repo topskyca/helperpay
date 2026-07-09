@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.6.0-beta';
+  const APP_VERSION = '0.6.1-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -555,26 +555,37 @@
 
   // EO rule: working a statutory holiday requires an alternative day off
   // within 60 days — cash in lieu is prohibited (fine HK$50,000).
+  // Handles both first-time scheduling and rescheduling/removal of an
+  // already-scheduled day off in lieu (owedItem.scheduled holds its date).
   function openScheduleAltSheet(owedItem) {
+    const existing = owedItem.scheduled || '';
     const ov = openSheet(
-      '<h2>Schedule day off in lieu</h2>' +
+      '<h2>' + (existing ? 'Reschedule day off in lieu' : 'Schedule day off in lieu') + '</h2>' +
       '<p class="muted mt">' + esc(state.config.helperName || 'Helper') + ' worked <b>' +
       esc(owedItem.name) + '</b> on ' + esc(fmtDate(owedItem.date)) + '. ' +
       'The law requires an alternative day off within 60 days (by ' + esc(fmtDate(owedItem.deadline)) + ') — ' +
       'extra pay is welcome but cannot replace the day off.</p>' +
+      (existing ? '<p class="muted small mt">Currently scheduled: <b>' + esc(fmtDate(existing)) + '</b></p>' : '') +
       '<label>Day off in lieu</label>' +
-      '<input id="alt-date" type="date" min="' + esc(E.addDays(owedItem.date, -60)) + '" max="' + esc(owedItem.deadline) + '">' +
+      '<input id="alt-date" type="date" value="' + esc(existing) + '"' +
+      ' min="' + esc(E.addDays(owedItem.date, -60)) + '" max="' + esc(owedItem.deadline) + '">' +
       '<p class="muted small" style="margin-top:6px">Pick a normal working day within 60 days of the holiday. She takes that day off with full pay.</p>' +
-      '<button class="btn mt" id="alt-save">Schedule day off</button>'
+      '<button class="btn mt" id="alt-save">' + (existing ? 'Save new date' : 'Schedule day off') + '</button>' +
+      (existing ? '<button class="btn ghost mt" id="alt-remove" style="color:var(--red);border-color:var(--red)">Remove — mark as not scheduled</button>' : '')
     );
+
+    // the entry being replaced must not block its own date re-validation
+    const holidaysSans = () => (state.config.holidays || []).filter(h => h.altFor !== owedItem.date);
+
     ov.querySelector('#alt-save').onclick = () => {
       const date = ov.querySelector('#alt-date').value;
       if (!date) { toast('Pick a date'); return; }
       if (date < E.addDays(owedItem.date, -60) || date > owedItem.deadline) {
         toast('Must be within 60 days of the holiday'); return;
       }
-      const cls = E.classifyDay(date, state.config);
+      const cls = E.classifyDay(date, Object.assign({}, state.config, { holidays: holidaysSans() }));
       if (cls.type !== 'normal') { toast('Pick a normal working day (not a rest day or holiday)'); return; }
+      state.config.holidays = holidaysSans();
       state.config.holidays.push({
         date: date,
         name: 'Day off in lieu — ' + owedItem.name + ' (' + fmtDateShort(owedItem.date) + ')',
@@ -583,33 +594,68 @@
       state.config.holidays.sort((a, b) => (a.date < b.date ? -1 : 1));
       saveConfig();
       closeSheet(ov);
-      toast('Day off scheduled — ' + fmtDateShort(date) + ' ✓');
+      toast(existing
+        ? 'Day off moved to ' + fmtDateShort(date) + ' ✓'
+        : 'Day off scheduled — ' + fmtDateShort(date) + ' ✓');
+      render();
+    };
+
+    const rm = ov.querySelector('#alt-remove');
+    if (rm) rm.onclick = async () => {
+      if (!(await confirmDialog('Remove scheduled day off?',
+        'The worked holiday (' + owedItem.name + ', ' + fmtDateShort(owedItem.date) + ') will show as owed again so you can pick another date.',
+        'Remove', true))) return;
+      state.config.holidays = holidaysSans();
+      saveConfig();
+      closeSheet(ov);
+      toast('Unscheduled — day off owed again');
       render();
     };
   }
 
   function owedCardHtml() {
-    const owed = E.owedAlternativeHolidays(state.config, state.logs)
-      .filter(o => !o.scheduled);
-    if (!owed.length) return '';
-    const rows = owed.map((o, i) =>
+    const all = E.owedAlternativeHolidays(state.config, state.logs);
+    const today = E.todayStr();
+    const unscheduled = all.filter(o => !o.scheduled);
+    // scheduled ones stay visible (with a Change option) until the day off is taken
+    const upcoming = all.filter(o => o.scheduled && o.scheduled >= today);
+    if (!unscheduled.length && !upcoming.length) return '';
+    const em = !state.ui.helperMode;
+
+    let rows = unscheduled.map(o =>
       '<div class="pending-row" style="cursor:default">' +
       '<div class="grow"><b>' + esc(fmtDate(o.date)) + ' · ' + esc(o.name) + '</b>' +
       '<div class="' + (o.overdue ? '' : 'muted') + ' small"' + (o.overdue ? ' style="color:var(--red);font-weight:700"' : '') + '>' +
       (o.overdue ? 'OVERDUE — was due by ' : 'Day off due by ') + esc(fmtDate(o.deadline)) + '</div></div>' +
-      (!state.ui.helperMode
-        ? '<button class="btn compact" data-schedule-alt="' + i + '">Schedule</button>'
-        : '') +
+      (em ? '<button class="btn compact" data-schedule-alt="' + esc(o.date) + '">Schedule</button>' : '') +
       '</div>').join('');
-    return '<div class="card">' +
-      '<h2>⚖️ ' + (state.ui.helperMode
-        ? 'Days off owed to you (' + owed.length + ')'
-        : 'Day off owed for holiday work (' + owed.length + ')') + '</h2>' +
-      rows +
-      '<p class="muted small mt">' + (state.ui.helperMode
+
+    rows += upcoming.map(o =>
+      '<div class="pending-row" style="cursor:default">' +
+      '<div class="grow"><b>' + esc(fmtDate(o.date)) + ' · ' + esc(o.name) + '</b>' +
+      '<div class="small" style="color:var(--green);font-weight:600">Day off scheduled: ' + esc(fmtDate(o.scheduled)) + ' ✓</div></div>' +
+      (em ? '<button class="btn ghost compact" data-schedule-alt="' + esc(o.date) + '">Change</button>' : '') +
+      '</div>').join('');
+
+    const title = unscheduled.length
+      ? '⚖️ ' + (state.ui.helperMode
+          ? 'Days off owed to you (' + unscheduled.length + ')'
+          : 'Day off owed for holiday work (' + unscheduled.length + ')')
+      : '⚖️ Day' + (upcoming.length === 1 ? '' : 's') + ' off in lieu — scheduled ✓';
+
+    let footer;
+    if (unscheduled.length) {
+      footer = state.ui.helperMode
         ? 'You worked these statutory holidays — the law says you get another day off within 60 days, on top of any extra pay.'
-        : 'Working a statutory holiday needs 48-hour notice and an alternative day off within 60 days. Paying cash instead of the day off is prohibited (fine HK$50,000) — extra pay on top is fine and already in the statement.') +
-      '</p></div>';
+        : 'Working a statutory holiday needs 48-hour notice and an alternative day off within 60 days. Paying cash instead of the day off is prohibited (fine HK$50,000) — extra pay on top is fine and already in the statement.';
+    } else {
+      footer = state.ui.helperMode
+        ? 'Your replacement day(s) off for holiday work — full pay, no deduction.'
+        : 'She takes the scheduled day off with full pay. Tap Change to move or remove it.';
+    }
+
+    return '<div class="card"><h2>' + title + '</h2>' + rows +
+      '<p class="muted small mt">' + footer + '</p></div>';
   }
 
   // ---------- statutory holiday sync (official HK Gov 1823 calendar) ----------
@@ -879,9 +925,12 @@
   }
 
   function bindToday() {
-    const owed = E.owedAlternativeHolidays(state.config, state.logs).filter(o => !o.scheduled);
     $$('#view [data-schedule-alt]').forEach(b => {
-      b.onclick = () => openScheduleAltSheet(owed[+b.dataset.scheduleAlt]);
+      b.onclick = () => {
+        const item = E.owedAlternativeHolidays(state.config, state.logs)
+          .find(o => o.date === b.dataset.scheduleAlt);
+        if (item) openScheduleAltSheet(item);
+      };
     });
     $$('#view [data-approve-log]').forEach(b => {
       b.onclick = e => {
