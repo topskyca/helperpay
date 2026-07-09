@@ -198,7 +198,9 @@ label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 5px
 .cal-cell.outside { color: var(--line); }
 .cal-cell.today { border-color: var(--accent); }
 .cal-cell.rest { color: var(--blue); }
-.cal-cell.holiday { color: var(--amber); }
+.cal-cell.holiday { color: var(--amber); font-weight: 800; }
+/* statutory holidays stand out with a tinted cell */
+.cal-cell.holiday:not(.empty):not(.outside) { background: var(--amber-soft); }
 .cal-cell .dots { display: flex; gap: 3px; height: 5px; }
 .cal-cell .dot { width: 5px; height: 5px; border-radius: 50%; }
 .dot.rest { background: var(--blue); }
@@ -218,6 +220,19 @@ label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 5px
 .pending-row:last-of-type { border-bottom: none; }
 .pending-row .btn.compact { width: auto; flex: none; }
 .pending-row [data-approve-log] { width: 44px; padding: 8px 0; }
+/* named holiday list under the calendar grid */
+.hol-list { margin-top: 12px; border-top: 1px dashed var(--line); }
+.hol-item {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 8px 2px; text-align: left;
+  border-bottom: 1px dashed var(--line);
+  font-size: 13.5px;
+}
+.hol-item:last-child { border-bottom: none; }
+.hol-item .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.hol-item b { white-space: nowrap; color: var(--amber); }
+.hol-item .nm { color: var(--muted); }
+
 .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 12px; color: var(--muted); }
 .cal-legend .item { display: flex; align-items: center; gap: 5px; }
 /* legend dots/marks live outside .cal-cell, so give them their own sizing */

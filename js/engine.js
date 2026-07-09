@@ -50,6 +50,15 @@
     return ymd(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
   }
 
+  // Calendar months, clamped to the target month's last day (30 Nov + 3 → 28/29 Feb).
+  function addMonths(s, n) {
+    const p = parseYmd(s);
+    const total = p.m - 1 + n;
+    const y = p.y + Math.floor(total / 12);
+    const m = (total % 12 + 12) % 12 + 1;
+    return ymd(y, m, Math.min(p.d, daysInMonth(y, m)));
+  }
+
   function todayStr() {
     const t = new Date();
     return ymd(t.getFullYear(), t.getMonth() + 1, t.getDate());
@@ -117,6 +126,13 @@
     return true;
   }
 
+  // Statutory holiday PAY is only an entitlement after 3 months of continuous
+  // employment (FDH Practical Guide Q4.5). The day off itself applies from
+  // day one regardless.
+  function inFirstThreeMonths(dateStr, config) {
+    return !!config.startDate && dateStr < addMonths(config.startDate, 3);
+  }
+
   // ---------- monthly statement ----------
 
   /**
@@ -155,7 +171,36 @@
       // helper-logged entries stay "pending" until the employer approves them
       const pending = !!(entry && entry.status === 'pending');
 
-      if (cls.type === 'normal') {
+      // First-3-months strict treatment (config.firstThreeMonthsUnpaidHolidays):
+      // holiday PAY is only an entitlement after 3 months, so a pure statutory
+      // holiday in the first 3 months may be treated as unpaid — taken = deduct
+      // like leave, worked = paid as a normal day with no extra. The day-off
+      // entitlement itself is unaffected: a worked holiday still owes an
+      // alternative day off (owedAlternativeHolidays keeps tracking it).
+      // Rest+holiday dates are exempt — the rest-day aspect governs pay.
+      const unpaidPhase = config.firstThreeMonthsUnpaidHolidays === true &&
+        cls.type === 'holiday' && inFirstThreeMonths(ds, config);
+
+      if (unpaidPhase) {
+        const missed = 1 - work;
+        if (missed > 0) {
+          deductionDays += missed;
+          lines.push({
+            date: ds, kind: 'deduction', days: missed,
+            label: cls.holiday.name + (missed === 1 ? ' — taken' : ' — half day taken') + ' (first 3 months: unpaid)',
+            note: (entry && entry.note) || '',
+            pending: pending, by: (entry && entry.by) || ''
+          });
+        }
+        if (work > 0) {
+          lines.push({
+            date: ds, kind: 'holiday-worked', days: 0,
+            label: cls.holiday.name + ' — worked (first 3 months: normal pay; day off in lieu still owed)',
+            note: (entry && entry.note) || '',
+            pending: pending, by: (entry && entry.by) || ''
+          });
+        }
+      } else if (cls.type === 'normal') {
         const missed = 1 - work;
         if (missed > 0) {
           deductionDays += missed;
@@ -342,9 +387,9 @@
   }
 
   const api = {
-    ymd, parseYmd, weekdayOf, daysInMonth, addDays, todayStr, monthKey,
+    ymd, parseYmd, weekdayOf, daysInMonth, addDays, addMonths, todayStr, monthKey,
     round2, dailyWage,
-    classifyDay, defaultWork, describeType, isEmployedOn,
+    classifyDay, defaultWork, describeType, isEmployedOn, inFirstThreeMonths,
     computeMonth, owedAlternativeHolidays, nextFreeDay, needsRestDaySubstitute,
     statementText, fmtMoney, fmtDays
   };

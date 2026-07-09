@@ -331,6 +331,63 @@ test('working the day off in lieu flags it as owed again', () => {
   assert.strictEqual(second.scheduled, null);
 });
 
+console.log('# first 3 months: statutory holidays unpaid (strict rule, opt-in flag)');
+test('addMonths adds calendar months and clamps to month end', () => {
+  assert.strictEqual(E.addMonths('2026-05-08', 3), '2026-08-08');
+  assert.strictEqual(E.addMonths('2026-11-30', 3), '2027-02-28'); // clamp
+  assert.strictEqual(E.addMonths('2027-11-30', 3), '2028-02-29'); // leap clamp
+});
+test('3-month boundary: entitled exactly at start + 3 months', () => {
+  assert.strictEqual(E.inFirstThreeMonths('2026-08-07', baseConfig), true);
+  assert.strictEqual(E.inFirstThreeMonths('2026-08-08', baseConfig), false);
+});
+test('flag ON: holiday taken in first 3 months is deducted like unpaid leave', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true });
+  const s = E.computeMonth(2026, 6, cfg, {}); // 19 Jun Tuen Ng, unlogged = taken
+  assert.strictEqual(s.deductionDays, 1);
+  assert.strictEqual(s.total, E.round2(5100 - E.dailyWage(5100)));
+  assert.ok(s.lines.some(l => l.kind === 'deduction' && /first 3 months: unpaid/.test(l.label)));
+});
+test('flag ON: half-day holiday taken deducts half', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true });
+  const s = E.computeMonth(2026, 6, cfg, { '2026-06-19': { work: 0.5 } });
+  assert.strictEqual(s.deductionDays, 0.5);
+});
+test('flag ON: holiday worked in first 3 months = normal pay, no bonus even if bonus on', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true, holidayWorkBonus: true });
+  const s = E.computeMonth(2026, 6, cfg, { '2026-06-19': { work: 1 } });
+  assert.strictEqual(s.allowanceDays, 0);
+  assert.strictEqual(s.deductionDays, 0);
+  assert.strictEqual(s.total, 5100);
+  assert.ok(s.lines.some(l => l.kind === 'holiday-worked' && /first 3 months: normal pay/.test(l.label)));
+});
+test('flag ON: worked first-3-months holiday STILL owes the alternative day off (Q4.6 has no 3-month exception)', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true });
+  const logs = { '2026-06-19': { work: 1 } };
+  assert.strictEqual(E.owedAlternativeHolidays(cfg, logs, '2026-07-09').length, 1);
+});
+test('flag ON: holidays after 3 months are paid as usual', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true, holidayWorkBonus: true });
+  // 26 Sep 2026 (Day after Mid-Autumn, Saturday) is after 8 Aug
+  const taken = E.computeMonth(2026, 9, cfg, {});
+  assert.strictEqual(taken.deductionDays, 0);
+  assert.strictEqual(taken.total, 5100);
+  const worked = E.computeMonth(2026, 9, cfg, { '2026-09-26': { work: 1 } });
+  assert.strictEqual(worked.allowanceDays, 1);
+});
+test('flag ON: rest+holiday dates are exempt (rest-day aspect governs pay)', () => {
+  const cfg = Object.assign({}, baseConfig, { firstThreeMonthsUnpaidHolidays: true });
+  const taken = E.computeMonth(2026, 5, cfg, {}); // 24 May Sun rest+holiday, unlogged
+  assert.strictEqual(taken.lines.filter(l => l.date === '2026-05-24').length, 0); // no deduction
+  const worked = E.computeMonth(2026, 5, cfg, { '2026-05-24': { work: 1 } });
+  assert.strictEqual(worked.lines.find(l => l.date === '2026-05-24').kind, 'allowance'); // +1 rest-day pay
+});
+test('flag OFF/unset: behavior unchanged (holidays paid from day one)', () => {
+  const s = E.computeMonth(2026, 6, baseConfig, {});
+  assert.strictEqual(s.deductionDays, 0);
+  assert.strictEqual(s.total, 5100);
+});
+
 console.log('# optional statutory-holiday work bonus (holidayWorkBonus)');
 test('default (unset) keeps the bonus — backward compatible', () => {
   const logs = { '2026-06-19': { work: 1 } }; // Tuen Ng worked

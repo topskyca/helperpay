@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.5.1-beta';
+  const APP_VERSION = '0.6.0-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -764,6 +764,7 @@
         restDayOverrides: {},
         holidays: Holidays.defaultHolidays(),
         holidayWorkBonus: false, // default off (legal minimum: day off, no extra pay)
+        firstThreeMonthsUnpaidHolidays: true, // strict rule: holiday pay starts after 3 months
         helperPin: '',
         employerPin: defaults.employerPin || '',
         lastBackupAt: null,
@@ -956,6 +957,20 @@
         d + '<span class="dots">' + dots + '</span>' + mark + '</button>';
     }
 
+    // named list of this month's statutory holidays — glanceable below the grid
+    const monthStartStr = E.ymd(y, m, 1);
+    const monthEndStr = E.ymd(y, m, dim);
+    const monthHolidays = (state.config.holidays || [])
+      .filter(h => h.date >= monthStartStr && h.date <= monthEndStr)
+      .sort((a, b) => (a.date < b.date ? -1 : 1));
+    let holList = '';
+    if (monthHolidays.length) {
+      holList = '<div class="hol-list">' + monthHolidays.map(h =>
+        '<button class="hol-item" data-date="' + esc(h.date) + '">' +
+        '<span class="dot holiday"></span><b>' + esc(fmtDateShort(h.date)) + '</b>' +
+        '<span class="nm">' + esc(h.name) + '</span></button>').join('') + '</div>';
+    }
+
     return '<div class="card">' +
       '<div class="cal-head">' +
       '<button class="nav-btn" id="cal-prev">‹</button>' +
@@ -966,6 +981,7 @@
       WEEKDAYS_SHORT.map((w, i) => '<div class="cal-dow' + (i === 0 ? ' sun' : '') + '">' + w + '</div>').join('') +
       cells +
       '</div>' +
+      holList +
       '<div class="cal-legend">' +
       '<span class="item"><span class="dot rest"></span> Rest day</span>' +
       '<span class="item"><span class="dot holiday"></span> Statutory holiday</span>' +
@@ -987,6 +1003,9 @@
     };
     $$('#view .cal-cell[data-date]').forEach(c => {
       c.onclick = () => openDaySheet(c.dataset.date);
+    });
+    $$('#view .hol-item').forEach(b => {
+      b.onclick = () => openDaySheet(b.dataset.date);
     });
   }
 
@@ -1247,6 +1266,15 @@
       '<b>This is voluntary, and off by default.</b> By law, working a statutory holiday is compensated with an <b>alternative day off within 60 days</b> (always tracked on the Today tab) — <b>not</b> cash. ' +
       'Extra pay on top is optional goodwill. Turn this <b>on</b> to pay the bonus (generous); leave it <b>off</b> for the legal minimum — day off only, no extra pay. ' +
       'Either way she keeps her day off. This affects statutory holidays only; <b>working a rest day always adds pay</b> (that is its lawful compensation) regardless of this setting.</p>' +
+      '<label class="row" style="margin-top:16px;cursor:pointer;font-size:14px;color:var(--text);font-weight:600">' +
+      '<input type="checkbox" id="st-3m" style="width:auto"' + (c.firstThreeMonthsUnpaidHolidays === true ? ' checked' : '') + '>' +
+      '<span>First 3 months: statutory holidays unpaid (strict rule)</span></label>' +
+      '<p class="muted small" style="margin-top:4px">' +
+      'Holiday <b>pay</b> is only an entitlement after 3 months of continuous employment (FDH Practical Guide Q4.5). ' +
+      'With this <b>on</b>, a statutory holiday in the first 3 months is treated strictly: taken → deducted like unpaid leave; worked → paid as a normal day with no extra. ' +
+      'Turn <b>off</b> to treat holidays as paid from day one (generous; some contracts/agencies arrange this). After 3 months, holidays are paid automatically either way. ' +
+      '<b>Note:</b> the day-off entitlement itself applies from day one — working a statutory holiday still legally requires an alternative day off within 60 days ' +
+      '(Labour Dept FAQ; no 3-month exception), so the Today tab keeps tracking it. Changing this recalculates past months.</p>' +
       '<p class="muted small mt">Daily rate is always monthly wage × 12 ÷ 365 (Labour Department formula). One-off rest-day date changes: tap the day in the Calendar.</p>' +
       '</div>';
 
@@ -1312,8 +1340,8 @@
       '<b>Statutory holidays — the official rules (Labour Department):</b><br>' +
       '• The day off itself is required from day one, for every employee regardless of length of service.<br>' +
       '• Statutory holiday <b>pay</b> is only an entitlement after <b>3 months</b> of continuous employment (FDH Practical Guide Q4.5): in her first 3 months she is <b>not legally entitled to holiday pay</b>. ' +
-      'For a monthly-paid helper this makes no practical difference — the fixed monthly wage already covers holidays, so taking one off does not reduce her salary. ' +
-      'This app does not deduct for holidays taken (standard practice for monthly-paid helpers); the 3-month rule mainly affects daily-rated workers.<br>' +
+      'Use the “First 3 months” switch under Pay to choose the strict treatment (taken → unpaid, worked → normal pay) or the generous one (paid from day one). ' +
+      'The day off itself, and the alternative day off when a holiday is worked, apply from day one regardless.<br>' +
       '• A helper may work a statutory holiday only with 48 hours’ prior notice, and the employer <b>must grant an alternative day off within 60 days</b>. ' +
       'The app tracks owed days off on the Today tab.<br>' +
       '• <b>Paying cash instead of the day off is prohibited</b> — any form of payment in lieu of a statutory holiday is an offence (fine HK$50,000), ' +
@@ -1369,6 +1397,14 @@
       c.holidayWorkBonus = hb.checked;
       saveConfig();
       toast(hb.checked ? 'Bonus on — extra pay for holiday work' : 'Bonus off — day off only');
+      render();
+    };
+
+    const m3 = $('#st-3m');
+    if (m3) m3.onchange = () => {
+      c.firstThreeMonthsUnpaidHolidays = m3.checked;
+      saveConfig();
+      toast(m3.checked ? 'Strict rule on — first-3-months holidays unpaid' : 'Holidays paid from day one');
       render();
     };
 
