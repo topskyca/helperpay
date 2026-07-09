@@ -167,14 +167,29 @@
           });
         }
       } else if (work > 0) {
-        // rest, holiday, or rest+holiday — worked days earn extra pay, once.
-        allowanceDays += work;
-        lines.push({
-          date: ds, kind: 'allowance', days: work,
-          label: describeType(cls) + ' — worked' + (work === 0.5 ? ' half day' : ''),
-          note: (entry && entry.note) || '',
-          pending: pending, by: (entry && entry.by) || ''
-        });
+        // rest, holiday, or rest+holiday — a worked day may earn extra pay, once.
+        // The statutory-holiday work bonus is OPTIONAL (config.holidayWorkBonus,
+        // default on): by law a worked holiday is compensated with an
+        // alternative day off (tracked by owedAlternativeHolidays), not cash —
+        // so the extra pay is voluntary goodwill. Rest-day work — including a
+        // rest day that is also a holiday — always earns the bonus, since its
+        // lawful compensation is pay (or a substituted rest day).
+        if (cls.type === 'holiday' && config.holidayWorkBonus === false) {
+          lines.push({
+            date: ds, kind: 'holiday-worked', days: 0,
+            label: describeType(cls) + ' — worked (day off owed, no extra pay)',
+            note: (entry && entry.note) || '',
+            pending: pending, by: (entry && entry.by) || ''
+          });
+        } else {
+          allowanceDays += work;
+          lines.push({
+            date: ds, kind: 'allowance', days: work,
+            label: describeType(cls) + ' — worked' + (work === 0.5 ? ' half day' : ''),
+            note: (entry && entry.note) || '',
+            pending: pending, by: (entry && entry.by) || ''
+          });
+        }
       }
     }
 
@@ -301,6 +316,12 @@
       L.push('Extra work on rest days / holidays (+' + stmt.allowanceDays + ' day' + (stmt.allowanceDays === 1 ? '' : 's') + '):');
       alw.forEach(l => L.push('  ' + l.date + '  ' + l.label + '  +' + fmtMoney(l.days * stmt.dailyWage) +
         (l.pending ? '  (pending approval)' : '')));
+    }
+    const info = stmt.lines.filter(l => l.kind === 'holiday-worked');
+    if (info.length) {
+      L.push('');
+      L.push('Statutory holidays worked (day off owed, no extra pay):');
+      info.forEach(l => L.push('  ' + l.date + '  ' + l.label));
     }
     if (extras.adjustments && extras.adjustments.length) {
       L.push('');

@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.4.2-beta';
+  const APP_VERSION = '0.5.0-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -763,6 +763,7 @@
         restDayWeekday: +$('#su-rest').value,
         restDayOverrides: {},
         holidays: Holidays.defaultHolidays(),
+        holidayWorkBonus: true,
         helperPin: '',
         employerPin: defaults.employerPin || '',
         lastBackupAt: null,
@@ -1014,6 +1015,7 @@
 
     const allowLines = stmt.lines.filter(l => l.kind === 'allowance');
     const dedLines = stmt.lines.filter(l => l.kind === 'deduction');
+    const infoLines = stmt.lines.filter(l => l.kind === 'holiday-worked');
 
     let html = head;
     html += '<p class="muted small">' + esc(fmtDateShort(stmt.periodStart)) + ' – ' + esc(fmtDateShort(stmt.periodEnd)) +
@@ -1034,6 +1036,10 @@
     dedLines.forEach(l => {
       html += '<div class="stmt-line sub"><span class="lbl">' + esc(fmtDateShort(l.date)) + ' · ' + esc(l.label) + pendTag(l) + '</span>' +
         '<span class="val minus">−' + money(l.days * stmt.dailyWage) + '</span></div>';
+    });
+    infoLines.forEach(l => {
+      html += '<div class="stmt-line sub"><span class="lbl">' + esc(fmtDateShort(l.date)) + ' · ' + esc(l.label) + pendTag(l) + '</span>' +
+        '<span class="val zero" style="color:var(--muted)">no change</span></div>';
     });
     if (stmt.food > 0) {
       html += '<div class="stmt-line"><span class="lbl"><b>Food allowance</b></span><span class="val">+' + money(stmt.food) + '</span></div>';
@@ -1234,6 +1240,13 @@
       '<p class="muted small" style="margin-top:4px">One rest day is earned per 7 days served, so the first week has none ' +
       '(e.g. started Fri 8 May → the Sunday 2 days later is a working day; first rest day is the next Sunday). ' +
       'A specific date can always be changed by tapping it in the Calendar.</p>' +
+      '<label class="row" style="margin-top:16px;cursor:pointer;font-size:14px;color:var(--text);font-weight:600">' +
+      '<input type="checkbox" id="st-holbonus" style="width:auto"' + (c.holidayWorkBonus !== false ? ' checked' : '') + '>' +
+      '<span>Add an extra day’s pay when a statutory holiday is worked</span></label>' +
+      '<p class="muted small" style="margin-top:4px">' +
+      '<b>This is voluntary.</b> By law, working a statutory holiday is compensated with an <b>alternative day off within 60 days</b> (always tracked on the Today tab) — <b>not</b> cash. ' +
+      'Extra pay on top is optional goodwill. Turn this <b>on</b> to pay the bonus (generous); turn it <b>off</b> for the legal minimum — day off only, no extra pay. ' +
+      'Either way she keeps her day off. This affects statutory holidays only; <b>working a rest day always adds pay</b> (that is its lawful compensation) regardless of this setting.</p>' +
       '<p class="muted small mt">Daily rate is always monthly wage × 12 ÷ 365 (Labour Department formula). One-off rest-day date changes: tap the day in the Calendar.</p>' +
       '</div>';
 
@@ -1298,12 +1311,13 @@
       '• First/last month is pro-rated by calendar days × daily wage.<br><br>' +
       '<b>Statutory holidays — the official rules (Labour Department):</b><br>' +
       '• The day off itself is required from day one, for every employee regardless of length of service.<br>' +
-      '• Statutory holiday <b>pay</b> under the Ordinance starts after 3 months of continuous contract. ' +
-      'For monthly-paid helpers the monthly wage covers these days anyway — this app treats them as paid from day one (the common contract/agency arrangement).<br>' +
+      '• Statutory holiday <b>pay</b> is only an entitlement after <b>3 months</b> of continuous employment (FDH Practical Guide Q4.5): in her first 3 months she is <b>not legally entitled to holiday pay</b>. ' +
+      'For a monthly-paid helper this makes no practical difference — the fixed monthly wage already covers holidays, so taking one off does not reduce her salary. ' +
+      'This app does not deduct for holidays taken (standard practice for monthly-paid helpers); the 3-month rule mainly affects daily-rated workers.<br>' +
       '• A helper may work a statutory holiday only with 48 hours’ prior notice, and the employer <b>must grant an alternative day off within 60 days</b>. ' +
       'The app tracks owed days off on the Today tab.<br>' +
       '• <b>Paying cash instead of the day off is prohibited</b> — any form of payment in lieu of a statutory holiday is an offence (fine HK$50,000), ' +
-      'even with mutual agreement. Extra pay on top of the day off is voluntary and legal.<br>' +
+      'even with mutual agreement. Extra pay <b>on top of</b> the day off is voluntary — control it with the “extra day’s pay when a statutory holiday is worked” switch under Pay.<br>' +
       '• If a statutory holiday falls on a rest day, another holiday must be granted on the next free day — ' +
       'the app prefills these substitutes and offers a one-tap add when you change rest days.<br>' +
       '• <b>Rest days are different from holidays:</b> rest-day work must be voluntary (compelling it is an offence, fine HK$50,000), ' +
@@ -1348,6 +1362,14 @@
       c.firstWeekNoRestDay = fw.checked;
       saveConfig();
       toast('Saved');
+    };
+
+    const hb = $('#st-holbonus');
+    if (hb) hb.onchange = () => {
+      c.holidayWorkBonus = hb.checked;
+      saveConfig();
+      toast(hb.checked ? 'Bonus on — extra pay for holiday work' : 'Bonus off — day off only');
+      render();
     };
 
     $('#add-helper').onclick = () => {

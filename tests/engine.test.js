@@ -331,6 +331,52 @@ test('working the day off in lieu flags it as owed again', () => {
   assert.strictEqual(second.scheduled, null);
 });
 
+console.log('# optional statutory-holiday work bonus (holidayWorkBonus)');
+test('default (unset) keeps the bonus — backward compatible', () => {
+  const logs = { '2026-06-19': { work: 1 } }; // Tuen Ng worked
+  const s = E.computeMonth(2026, 6, baseConfig, logs);
+  assert.strictEqual(s.allowanceDays, 1);
+  assert.strictEqual(s.total, E.round2(5100 + E.dailyWage(5100)));
+});
+test('bonus OFF: worked statutory holiday adds no pay but is shown as info', () => {
+  const cfg = Object.assign({}, baseConfig, { holidayWorkBonus: false });
+  const logs = { '2026-06-19': { work: 1 } };
+  const s = E.computeMonth(2026, 6, cfg, logs);
+  assert.strictEqual(s.allowanceDays, 0);
+  assert.strictEqual(s.total, 5100); // just the monthly wage
+  const info = s.lines.find(l => l.kind === 'holiday-worked');
+  assert.ok(info && /day off owed, no extra pay/.test(info.label));
+});
+test('bonus OFF: alternative day off is still owed (day off never removed)', () => {
+  const cfg = Object.assign({}, baseConfig, { holidayWorkBonus: false });
+  const logs = { '2026-06-19': { work: 1 } };
+  assert.strictEqual(E.owedAlternativeHolidays(cfg, logs, '2026-07-08').length, 1);
+});
+test('bonus OFF: working a rest day still adds pay (its lawful compensation)', () => {
+  const cfg = Object.assign({}, baseConfig, { holidayWorkBonus: false });
+  const logs = { '2026-08-02': { work: 1 } }; // plain Sunday rest day
+  const s = E.computeMonth(2026, 8, cfg, logs);
+  assert.strictEqual(s.allowanceDays, 1);
+});
+test('bonus OFF: rest+holiday worked still adds pay (rest-day aspect)', () => {
+  const cfg = Object.assign({}, baseConfig, { holidayWorkBonus: false });
+  const logs = { '2026-05-24': { work: 1 } }; // Sunday rest + Buddha's Birthday
+  const s = E.computeMonth(2026, 5, cfg, logs);
+  assert.strictEqual(s.allowanceDays, 1);
+});
+test('bonus OFF: the verified June case drops to base 5,100 (day off owed for 19 Jun)', () => {
+  const cfg = Object.assign({}, baseConfig, { holidayWorkBonus: false });
+  const logs = {
+    '2026-06-01': { work: 0.5 }, '2026-06-07': { work: 0.5 }, '2026-06-14': { work: 0.5 },
+    '2026-06-19': { work: 1 }, '2026-06-26': { work: 0 }, '2026-06-28': { work: 1 }
+  };
+  const s = E.computeMonth(2026, 6, cfg, logs);
+  // rest-day work still counts (7,14,28 = 0.5+0.5+1 = 2), holiday 19 Jun no longer +1
+  assert.strictEqual(s.allowanceDays, 2);
+  assert.strictEqual(s.deductionDays, 1.5);
+  assert.strictEqual(s.total, E.round2(5100 - 1.5 * E.dailyWage(5100) + 2 * E.dailyWage(5100)));
+});
+
 console.log('# rest-day + statutory-holiday collision (FDH guide Q4.8)');
 test('nextFreeDay skips rest days and existing holiday entries', () => {
   // 24 May 2026: Sunday rest + Buddha's Birthday; 25 May is already a
