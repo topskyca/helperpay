@@ -2,7 +2,7 @@
  * Network-first with cache fallback, so updates arrive immediately when
  * online and the app still opens with no connection.
  */
-const VERSION = 'helperpay-v11';
+const VERSION = 'helperpay-v12';
 const ASSETS = [
   '.',
   'index.html',

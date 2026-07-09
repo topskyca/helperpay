@@ -15,7 +15,7 @@
   const Store = window.HSStore;
   const Holidays = window.HSHolidays;
 
-  const APP_VERSION = '0.5.0-beta';
+  const APP_VERSION = '0.5.1-beta';
   const FEEDBACK_EMAIL = 'admin@adflow.vip';
   const WHATSAPP_DISPLAY = '+852 5229 5286';
   const WHATSAPP_URL = 'https://wa.me/85252295286?text=' +
@@ -763,7 +763,7 @@
         restDayWeekday: +$('#su-rest').value,
         restDayOverrides: {},
         holidays: Holidays.defaultHolidays(),
-        holidayWorkBonus: true,
+        holidayWorkBonus: false, // default off (legal minimum: day off, no extra pay)
         helperPin: '',
         employerPin: defaults.employerPin || '',
         lastBackupAt: null,
@@ -1244,8 +1244,8 @@
       '<input type="checkbox" id="st-holbonus" style="width:auto"' + (c.holidayWorkBonus !== false ? ' checked' : '') + '>' +
       '<span>Add an extra day’s pay when a statutory holiday is worked</span></label>' +
       '<p class="muted small" style="margin-top:4px">' +
-      '<b>This is voluntary.</b> By law, working a statutory holiday is compensated with an <b>alternative day off within 60 days</b> (always tracked on the Today tab) — <b>not</b> cash. ' +
-      'Extra pay on top is optional goodwill. Turn this <b>on</b> to pay the bonus (generous); turn it <b>off</b> for the legal minimum — day off only, no extra pay. ' +
+      '<b>This is voluntary, and off by default.</b> By law, working a statutory holiday is compensated with an <b>alternative day off within 60 days</b> (always tracked on the Today tab) — <b>not</b> cash. ' +
+      'Extra pay on top is optional goodwill. Turn this <b>on</b> to pay the bonus (generous); leave it <b>off</b> for the legal minimum — day off only, no extra pay. ' +
       'Either way she keeps her day off. This affects statutory holidays only; <b>working a rest day always adds pay</b> (that is its lawful compensation) regardless of this setting.</p>' +
       '<p class="muted small mt">Daily rate is always monthly wage × 12 ÷ 365 (Labour Department formula). One-off rest-day date changes: tap the day in the Calendar.</p>' +
       '</div>';

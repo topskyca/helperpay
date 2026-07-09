@@ -168,12 +168,14 @@
         }
       } else if (work > 0) {
         // rest, holiday, or rest+holiday — a worked day may earn extra pay, once.
-        // The statutory-holiday work bonus is OPTIONAL (config.holidayWorkBonus,
-        // default on): by law a worked holiday is compensated with an
-        // alternative day off (tracked by owedAlternativeHolidays), not cash —
-        // so the extra pay is voluntary goodwill. Rest-day work — including a
-        // rest day that is also a holiday — always earns the bonus, since its
-        // lawful compensation is pay (or a substituted rest day).
+        // The statutory-holiday work bonus is OPTIONAL (config.holidayWorkBonus):
+        // by law a worked holiday is compensated with an alternative day off
+        // (tracked by owedAlternativeHolidays), not cash — so the extra pay is
+        // voluntary goodwill. New profiles default it OFF (legal minimum);
+        // legacy configs created before the toggle have the field unset and
+        // keep the bonus, so their past totals never change silently. Rest-day
+        // work — including a rest day that is also a holiday — always earns the
+        // bonus, since its lawful compensation is pay (or a substituted rest day).
         if (cls.type === 'holiday' && config.holidayWorkBonus === false) {
           lines.push({
             date: ds, kind: 'holiday-worked', days: 0,
