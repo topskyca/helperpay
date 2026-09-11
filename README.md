@@ -8,10 +8,14 @@ The web app remains free, with no subscription, account signup or trial expiry. 
 
 ## September 2026 update
 
-- Hong Kong Traditional Chinese and English, guided setup, and an isolated sample demo.
-- Contract-specific calculation checks, official 2026–2027 statutory holiday options, explicit time-off arrangements, approval controls and frozen statement inputs.
+- Hong Kong Traditional Chinese and English, shorter guided setup that retains drafts when changing language, and an isolated sample demo.
+- Contract-specific calculation checks, official 2026–2027 statutory holiday options, explicit time-off arrangements, approval controls and confirmed statement versions. Previewing or cancelling a payment does not confirm a statement.
+- Effective-dated wage and food terms, holiday-data review, and rest-day changes that retain existing work and notes. Actual notifications and agreements must be recorded; the app does not invent them.
 - Local records and attachments, validated backup import with recovery, optional analytics (off by default), and erasure controls.
-- In-page rest-day, holiday/time-off and payday check-ins. They do not send notifications while the page is closed and do not assume that work or payment happened.
+- In-page rest-day, holiday/time-off and payday check-ins retain unfinished items and link to the relevant date or month. They do not send notifications while the page is closed and do not assume that work or payment happened.
+- Clear issue lists, external-calculation payment records for unsupported cases, grouped settings, unsaved-change warnings and explicit backup-save confirmation.
+
+今次改善首次設定、未完成待辦、結算預覽及修訂、工資生效日期、補假及備份流程。更改休息日期會保留原有工作及備註；取消付款草稿不會自動確認結算。未支援的計算仍須在外部核對，實際付款可另行如實記錄。
 
 ## Existing records
 
@@ -25,6 +29,6 @@ Existing payment records are retained. The calculator does not invent missing co
 
 HelperPay is a reference tracker for Hong Kong ID 407 foreign domestic-helper records, not legal advice, a bank/payment-transfer service or an authoritative payroll product. Unsupported calculations are blocked from finalized statements and directed to [Labour Department's reference calculator](https://www.lr.labour.gov.hk/web/en/calculator/index.html). Full statutory entitlement coverage and professional legal review are not implied.
 
-The active release is identified in `web-release.json`. Its active scripts are under `web/20260911-free-1/`; older root `js/` and `css/` files are retained for old cached pages and are not the active calculator. The website service worker caches a complete versioned release, without caching or uploading payroll records. A software rollback does not restore or alter browser payroll data; retain your backup.
+The active release is identified in `web-release.json`. Its active scripts are under `web/20260911-ux-1/`; older versioned assets and root `js/` and `css/` files are retained for old cached pages and are not the active calculator. The website service worker caches a complete versioned release, without caching or uploading payroll records. A software rollback does not restore or alter browser payroll data; retain your backup.
 
 Support: [yonghe@affluentbyte.hk](mailto:yonghe@affluentbyte.hk)

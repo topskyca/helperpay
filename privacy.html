@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b6e4f">
   <title>HelperPay Privacy Policy · 私隱政策</title>
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="web/20260911-ux-1/app.css">
+  <script src="web/20260911-ux-1/language.js" defer></script>
   <style>
     .policy { max-width: 720px; margin: 0 auto; padding: 20px 14px 48px; }
     .policy h1 { font-size: 26px; margin-bottom: 4px; }
@@ -16,10 +17,11 @@
     .policy a { color: var(--accent); }
   </style>
 </head>
-<body>
-  <header id="topbar"><div class="brand">Helper<span>Pay</span></div><a href="index.html" class="mode-chip">返回 · Back</a></header>
-  <main class="policy"><section><h2>Free web check-ins / 免費網頁待辦</h2><p>Work, holiday and payday check-ins run locally while the page is open. No background push service or subscription SDK is loaded. Check-in and upgrade preferences stay in this browser and are erased by “Erase all data”. They are not included in payroll backups. Your saved files elsewhere are not erased.</p><p>工作、假日及發薪待辦在開啟網頁時於本機運作，不載入背景推送服務或訂閱程式。待辦及升級選項存於此瀏覽器，可透過「清除所有資料」刪除；不包含在薪酬備份內，亦不會刪除另存的備份。</p></section>
-    <section lang="zh-HK">
+<body data-language-page="privacy" data-title-zh="HelperPay 私隱政策" data-title-en="HelperPay Privacy Policy">
+  <header id="topbar"><div class="brand">Helper<span>Pay</span></div><a href="index.html?lang=zh-HK" data-page-return class="mode-chip">返回 · Back</a></header>
+  <main class="policy">
+    <nav class="page-language-controls" data-page-switcher aria-label="Language / 語言" hidden><button class="btn ghost compact" data-page-switch="zh-HK">繁體中文</button><button class="btn ghost compact" data-page-switch="en">English</button></nav><section><h2><span data-page-language="en">Free web check-ins</span><span data-page-language="zh-HK">免費網頁待辦</span></h2><p data-page-language="en">Work, holiday and payday check-ins run locally while the page is open. No background push service or subscription SDK is loaded. Check-in and upgrade preferences stay in this browser and are erased by “Erase all data”. They are not included in payroll backups. Your saved files elsewhere are not erased.</p><p data-page-language="zh-HK">工作、假日及發薪待辦在開啟網頁時於本機運作，不載入背景推送服務或訂閱程式。待辦及升級選項存於此瀏覽器，可透過「清除所有資料」刪除；不包含在薪酬備份內，亦不會刪除另存的備份。</p></section>
+    <section lang="zh-HK" data-page-language="zh-HK">
       <h1>私隱政策</h1>
       <p>生效日期：2026年9月8日</p>
       <p>HelperPay 是香港外籍家庭傭工 ID 407 薪酬及假期的本機參考記錄工具。本政策適用於免費 HelperPay 網頁版；iOS 及 Android 版另有收費及資料處理披露。</p>
@@ -47,7 +49,7 @@
       <p>私隱查詢：<a href="mailto:yonghe@affluentbyte.hk?subject=HelperPay%20privacy">yonghe@affluentbyte.hk</a></p>
     </section>
 
-    <section class="lang" lang="en">
+    <section class="lang" lang="en" data-page-language="en">
       <h1>Privacy Policy</h1>
       <p>Effective: 8 September 2026</p>
       <p>HelperPay is an on-device reference and record-keeping tool for Hong Kong ID 407 foreign-domestic-helper pay and leave. This policy covers the free HelperPay web app. Native iOS and Android apps have separate billing disclosures.</p>

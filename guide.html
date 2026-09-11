@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b6e4f">
   <title>HelperPay 使用指南 · User Guide</title>
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="web/20260911-ux-1/app.css">
+  <script src="web/20260911-ux-1/language.js" defer></script>
   <style>
     .guide { max-width: 720px; margin: 0 auto; padding: 20px 14px 48px; }
     .guide h1 { font-size: 26px; }
@@ -16,66 +17,77 @@
     .guide .lang { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 24px; }
   </style>
 </head>
-<body><p style="padding:16px">免費網頁版繼續免費。工作及發薪待辦須開啟網頁查看，並非背景通知。 Free web access continues; check-ins are in-page only, not background alerts.</p>
-  <header id="topbar"><div class="brand">Helper<span>Pay</span></div><a href="index.html" class="mode-chip">返回 · Back</a></header>
-  <main class="guide">
-    <section lang="zh-HK">
+<body data-language-page="guide" data-title-zh="HelperPay 使用指南" data-title-en="HelperPay User Guide">
+  <header id="topbar"><div class="brand">Helper<span>Pay</span></div><a href="index.html?lang=zh-HK" data-page-return class="mode-chip">返回 · Back</a></header>
+  <main class="guide"><p data-page-language="zh-HK">免費網頁版繼續免費。工作及發薪待辦須開啟網頁查看，並非背景通知。</p><p data-page-language="en">Free web access continues; check-ins are in-page only, not background alerts.</p>
+    <nav class="page-language-controls" data-page-switcher aria-label="Language / 語言" hidden><button class="btn ghost compact" data-page-switch="zh-HK">繁體中文</button><button class="btn ghost compact" data-page-switch="en">English</button></nav>
+    <section lang="zh-HK" data-page-language="zh-HK">
       <h1>HelperPay 使用指南</h1>
-      <p>HelperPay 協助你記錄香港 ID 407 外傭的合約、工作日、休息日、法定假日、結算快照及付款。它是參考及記錄工具，並非法律意見或勞工處薪酬產品。</p>
+      <p>HelperPay 協助你記錄香港 ID 407 外傭的合約、工作日、休息日、法定假日、已確認結算及付款。它是參考及記錄工具，並非法律意見或勞工處薪酬產品。</p>
 
       <h2>首次設定</h2>
       <ol>
         <li>準備 ID 407 合約，輸入簽署日期、兩年合約開始日期、月薪及膳食安排。</li>
         <li>按雙方實際協議選擇休息日是否有薪，以及休息日工作時的補償安排。</li>
         <li>選擇合約採用冬節或聖誕節。程式會載入勞工處2026及2027年法定假日清單。</li>
-        <li>只有在同一工資及膳食條款適用於整份兩年合約時，才在設定中確認「整份合約條款」。如中途曾更改，請保留限制並使用官方計算機。</li>
+        <li>在設定的「工資及膳食歷史」按生效日期核對各段條款。實際加薪／膳食變更與更正輸入錯誤分開記錄，先預覽再保存；原有結算及付款不會改寫。月中變更及未支援的平均工資計算仍須使用官方計算機另行核對。</li>
       </ol>
 
       <h2>每日記錄</h2>
-      <p>一般工作日不需要逐日輸入。只記錄請假、半日工作、休息日工作或法定假日工作。外傭模式輸入的項目會先標記為待批准；未批准項目不能進入凍結結算單。</p>
-      <p>休息日工作必須屬自願，並按實際協議記錄現金金額或補回休息日。法定假日工作須提前48小時通知，並安排另定假日；付款不能取代假日。</p>
+      <p>一般工作日不需要逐日輸入。請記錄請假、部分時段工作，並確認休息日及假日有否上班。沒有記錄的日期只是合約預設，並非已確認。外傭模式輸入的項目會先標記為待批准；批准前不能納入已確認結算。</p>
+      <p>休息日工作必須屬自願，並按實際協議記錄現金金額或補回休息日。法定假日工作須提前48小時通知，並安排另定假日；付款不能取代假日。補假表格須填實際約定的工作開始時間與已作出通知的時間（均以香港時間輸入）；舊安排缺少時間須補核，不應猜填。</p>
+      <p>舊假日出現「待核對」時：到「設定 → 假日日曆 → 核對官方日曆」預覽缺少或不符的官方日期，再逐筆按「核對」補齊實際類型、原日期及通知／協議。更改冬節或聖誕節不會自動轉移原有補假協議；有衝突的安排仍須逐項處理。只可封存已核實錯誤或重複的一筆記錄，原資料保留於更改歷史。保存日曆不等於已放假或已付清；工作、付款及已確認結算均不改寫。</p>
 
       <h2>結算及付款</h2>
       <ol>
         <li>在「薪金」查看參考估算及法律檢查清單。</li>
         <li>先處理所有限制。首月／尾月、缺勤扣款、無薪休息日或其他未支援權利會被阻止，並連結至官方計算機。</li>
-        <li>所有已支援檢查通過後，按「凍結結算單並記錄付款」。凍結記錄保存輸入資料、計算版本、法律來源版本及校驗碼，日後編輯不會改寫。</li>
-        <li>輸入付款方式及截圖，再讓外傭確認收款。舊版本建立而沒有快照的付款會明確標記為舊記錄。</li>
+        <li>所有已支援檢查通過後，按「預覽及確認結算」。預覽時可以取消；只有明確確認後才保存不可改写的版本。日後補記工作會另列差額，可填寫原因建立修訂版，原有結算及付款仍保留。</li>
+        <li>實際付款後，再記錄金額、日期及方式；此功能不會轉帳。未支援的計算可記錄「另行核算後的實際付款」，但須填核算依據，不會標為 HelperPay 已確認計算。</li>
+        <li>可附加付款截圖，再讓外傭確認收款。舊版本建立而沒有已確認計算明細的付款會明確標記為舊記錄。</li>
       </ol>
 
+      <h2>工作及發薪待辦</h2>
+      <p>「今日」→「查看未完成待辦」可查看近7日、近30日及更早的漏記或發薪核對。過了當天不會自動消失，亦不會把合約預設當成已確認。已確認結算與現有資料一致且付款足夠時，工資待辦才完成；另行計算的月份，可在薪金頁明確記錄外部工資核對，須填完整應付金額、依據及已付清的確認。核對記錄隨薪酬備份保存；資料有變更會重新提醒，不會改寫舊核對或付款。</p>
+      <p>關閉提醒類別只會隱藏該類待辦，不會標為完成。網頁待辦須開啟網頁查看；手機 App 的系統通知另須主動啟用，並不保證準時送達。工資待辦不包括外傭確認收款或終止僱傭的其他權益。</p>
       <h2>私隱及備份</h2>
-      <p>資料預設只儲存在裝置。匿名統計預設關閉，必須由你在設定中主動啟用。請定期匯出備份並保存在安全位置。詳情請閱讀<a href="privacy.html">私隱政策</a>。</p>
+      <p>資料預設只儲存在裝置。匿名統計預設關閉，必須由你在設定中主動啟用。請定期匯出備份並保存在安全位置。詳情請閱讀<a href="privacy.html?lang=zh-HK" data-local-page="privacy.html">私隱政策</a>。</p>
 
       <h2>需要其他法定權益計算？</h2>
       <p>年假、疾病津貼、產假／侍產假、終止合約款項、遣散費及長期服務金不由本版本自動計算。請使用<a href="https://www.lr.labour.gov.hk/web/en/calculator/index.html" target="_blank" rel="noopener">勞工處法定僱傭權益參考計算機</a>，並在有爭議或複雜情況下諮詢香港僱傭法律專業人士。</p>
     </section>
 
-    <section class="lang" lang="en">
+    <section class="lang" lang="en" data-page-language="en">
       <h1>HelperPay User Guide</h1>
-      <p>HelperPay helps record a Hong Kong ID 407 helper’s contract, working days, rest days, statutory holidays, frozen statements and payments. It is a reference and record-keeping tool, not legal advice or a Labour Department payroll product.</p>
+      <p>HelperPay helps record a Hong Kong ID 407 helper’s contract, working days, rest days, statutory holidays, confirmed statements and payments. It is a reference and record-keeping tool, not legal advice or a Labour Department payroll product.</p>
 
       <h2>First setup</h2>
       <ol>
         <li>Have the ID 407 contract ready. Enter its signing date, two-year start date, monthly wage and food arrangement.</li>
         <li>Select the real agreed terms for rest-day pay and compensation for voluntary rest-day work.</li>
         <li>Choose Winter Solstice or Christmas Day. The app loads the Labour Department’s 2026 and 2027 statutory-holiday lists.</li>
-        <li>Confirm the displayed full-contract terms only if the same wage and food arrangement apply throughout the full two years. If either changed, keep the gate in place and use the official calculator.</li>
+        <li>Review each effective period in Settings → Wage &amp; food history. Record actual changes separately from corrections of input mistakes, then preview and confirm. Existing statements and payments are retained. Mid-month changes and unsupported statutory average-wage calculations still require separate review with the official calculator.</li>
       </ol>
 
       <h2>Daily records</h2>
-      <p>Normal working days need no daily entry. Record only leave, partial days, rest-day work or statutory-holiday work. Entries made in Helper mode stay pending until the employer approves them; pending items cannot enter a frozen statement.</p>
-      <p>Rest-day work must be voluntary and use the actually agreed cash amount or substituted rest day. Statutory-holiday work needs 48 hours’ notice and an alternative holiday; cash cannot replace the holiday.</p>
+      <p>Normal working days need no daily entry. Record leave and partial days, and confirm whether rest days and holidays were worked or taken off. An unmarked day is a contract default, not a confirmation. Entries made in Helper mode stay pending until the employer approves them; they cannot be included in a confirmed statement until approved.</p>
+      <p>Rest-day work must be voluntary and use the actually agreed cash amount or substituted rest day. Statutory-holiday work needs 48 hours’ notice and an alternative holiday; cash cannot replace the holiday. Enter the actual agreed work start and notice already given in Hong Kong time. Check missing times in older arrangements rather than guessing them.</p>
+      <p>For older holidays marked for review, open Settings → Holiday calendar → Review official calendar to preview missing or mismatched official dates. Review each flagged record to enter its actual type, source day and notice/agreement. Changing Winter Solstice/Christmas does not transfer an existing day-off agreement. Archive only a checked incorrect or duplicate entry; its original stays in change history. Saving a calendar is not proof of time off or payment. Work, payments and confirmed statements remain unchanged.</p>
 
       <h2>Statements and payments</h2>
       <ol>
         <li>Open Salary to see a reference estimate and legal-check list.</li>
         <li>Resolve every blocker first. Partial first/final months, absence deductions, unpaid rest days and other unsupported entitlements link to the official calculator.</li>
-        <li>When all supported checks pass, choose Freeze statement &amp; record payment. The frozen record stores inputs, calculation version, legal-source version and checksum; later edits cannot rewrite it.</li>
-        <li>Add the payment method and screenshot, then ask the helper to acknowledge receipt. Payments created by an older version without a snapshot are clearly marked as legacy records.</li>
+        <li>When supported checks pass, choose Preview and confirm statement. You may cancel the preview; only explicit confirmation saves an immutable version. Later work records appear as separate changes. Create a revision with a reason; previous statements and payment links remain intact.</li>
+        <li>After making a payment, record its actual amount, date and method; this does not transfer money. Unsupported calculations can use Record an externally calculated payment with a calculation reference, but are not labelled HelperPay-confirmed calculations.</li>
+        <li>Optionally attach a payment screenshot, then ask the helper to acknowledge receipt. Payments created by an older version without confirmed calculation details are clearly marked as legacy records.</li>
       </ol>
 
+      <h2>Work and payday check-ins</h2>
+      <p>Today → Review outstanding tasks shows the last 7 days, last 30 days and older work/payday reviews. Missed tasks do not disappear after their day; defaults are not confirmations. Wage tasks complete when the current confirmed version matches the records and actual recorded payments cover it. For separately calculated months, explicitly record an external wage review in Salary: enter the full wage amount, calculation reference and confirmation it has been paid. Review records are included in payroll backups; changed records reopen the task without rewriting earlier reviews or payments.</p>
+      <p>Disabling a reminder category hides its tasks without completing them. Web check-ins require an open page; system notifications in the installed app require opt-in and are not guaranteed deadline alerts. Wage tasks do not complete helper receipt acknowledgement or other termination entitlements.</p>
       <h2>Privacy and backups</h2>
-      <p>Data stays on the device by default. Anonymous statistics are off by default and require your opt-in under Settings. Export backups regularly and keep them secure. Read the <a href="privacy.html">Privacy Policy</a>.</p>
+      <p>Data stays on the device by default. Anonymous statistics are off by default and require your opt-in under Settings. Export backups regularly and keep them secure. Read the <a href="privacy.html?lang=en" data-local-page="privacy.html">Privacy Policy</a>.</p>
 
       <h2>Other statutory entitlements</h2>
       <p>This release does not automatically calculate annual leave, sickness allowance, maternity/paternity pay, termination payments, severance or long-service payment. Use the <a href="https://www.lr.labour.gov.hk/web/en/calculator/index.html" target="_blank" rel="noopener">Labour Department Statutory Employment Entitlements Reference Calculator</a> and seek qualified Hong Kong employment-law advice for disputed or complex cases.</p>

@@ -1,0 +1,9 @@
+.demo-workspace #topbar { flex-wrap: wrap; gap: 8px; background: #fff7e6; }
+#demo-notice { flex-basis: 100%; border-top: 1px solid #a66b1e; padding-top: 8px; color: #563609; }
+.demo-notice-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.demo-notice-row strong { font-size: 13px; }
+.demo-notice-row a { width: auto; color: #563609; border-color: #a66b1e; text-decoration: none; }
+#demo-notice summary { cursor: pointer; font-size: 12px; margin-top: 4px; }
+#demo-notice details p { font-size: 13px; line-height: 1.5; max-height: 28vh; overflow: auto; padding-top: 8px; }
+.demo-guidance, .demo-tag { padding: 10px 12px; border: 1px solid #a66b1e; border-radius: 10px; background: #fff7e6; color: #563609; font-size: 13px; margin-bottom: 12px; }
+@media print { #demo-notice { display: block !important; } }
