@@ -1,46 +1,15 @@
-/* HelperPay service worker — offline support.
- * Network-first with cache fallback, so updates arrive immediately when
- * online and the app still opens with no connection.
- */
-const VERSION = 'helperpay-v14';
-const ASSETS = [
-  '.',
-  'index.html',
-  'guide.html',
-  'css/app.css',
-  'js/analytics.js',
-  'js/engine.js',
-  'js/holidays.js',
-  'js/store.js',
-  'js/app.js',
-  'icon.svg',
-  'manifest.webmanifest'
-];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
-});
-
+/* Free web release 20260911-free-1; atomic offline package. */
+const VERSION = 'helperpay-web-20260911-free-1';
+const ASSETS = ["index.html","demo.html","guide.html","privacy.html","icon.svg","manifest.webmanifest","web/20260911-free-1/analytics.js","web/20260911-free-1/app.css","web/20260911-free-1/app.js","web/20260911-free-1/compliance.js","web/20260911-free-1/demo-app.js","web/20260911-free-1/demo-entry.js","web/20260911-free-1/demo.css","web/20260911-free-1/engine.js","web/20260911-free-1/entry.js","web/20260911-free-1/holidays.js","web/20260911-free-1/i18n.js","web/20260911-free-1/legal-model.js","web/20260911-free-1/store.js","web/20260911-free-1/web.css"];
+self.addEventListener('install', e => e.waitUntil(caches.open(VERSION).then(c => c.addAll(ASSETS.map(url => new Request(url, {cache:'reload'})))).then(() => self.skipWaiting())));
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+// Old package caches are deliberately retained so already-open tabs can finish
+// safely. Browser storage eviction may remove them; no user records are cached.
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  if (new URL(e.request.url).origin !== location.origin) return; // don't cache gov API calls
-  e.respondWith(
-    // cache: 'no-cache' forces revalidation with the server so updates are
-    // never masked by the browser HTTP cache; offline still falls back below.
-    fetch(e.request, { cache: 'no-cache' })
-      .then(res => {
-        const copy = res.clone();
-        caches.open(VERSION).then(c => c.put(e.request, copy));
-        return res;
-      })
-      .catch(() => caches.match(e.request, { ignoreSearch: true }))
-  );
+  if(e.request.method !== 'GET') return;
+  const url = new URL(e.request.url), scope = new URL(self.registration.scope);
+  if(url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname)) return;
+  const path = url.pathname.slice(scope.pathname.length) || 'index.html';
+  if(!ASSETS.includes(path)) return;
+  e.respondWith(caches.open(VERSION).then(async c => (await c.match(new URL(path, scope).href)) || fetch(e.request)));
 });

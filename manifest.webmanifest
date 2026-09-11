@@ -1,7 +1,7 @@
 {
   "name": "HelperPay — HK Helper Salary Tracker",
   "short_name": "HelperPay",
-  "description": "Track working days, rest days and statutory holidays for your Hong Kong domestic helper, and calculate salary the Employment Ordinance way.",
+  "description": "A bilingual, privacy-first reference tracker for Hong Kong ID 407 domestic-helper pay and leave records.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f4f6f9",
