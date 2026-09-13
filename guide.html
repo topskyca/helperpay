@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b6e4f">
   <title>HelperPay 使用指南 · User Guide</title>
-  <link rel="stylesheet" href="web/20260911-ux-1/app.css">
-  <script src="web/20260911-ux-1/language.js" defer></script>
+  <link rel="stylesheet" href="web/20260911-ux-2/app.css">
+  <script src="web/20260911-ux-2/language.js" defer></script>
   <style>
     .guide { max-width: 720px; margin: 0 auto; padding: 20px 14px 48px; }
     .guide h1 { font-size: 26px; }
@@ -28,28 +28,44 @@
       <h2>首次設定</h2>
       <ol>
         <li>準備 ID 407 合約，輸入簽署日期、兩年合約開始日期、月薪及膳食安排。</li>
+        <li>首個工作日須填真實日期。未知簽署日期或月薪可留空；未商定的其他條款可選「需要核對」。保存後可先記錄實際情況，待核對清單會保留；未知資料不會當作已確認計薪條款。</li>
+        <li>請明確選擇工資及膳食自入職起一直相同、曾經調整，或稍後核對。曾調整時，只記錄目前安排的已知生效日期，較早期間不會自動套用目前月薪。</li>
         <li>按雙方實際協議選擇休息日是否有薪，以及休息日工作時的補償安排。</li>
         <li>選擇合約採用冬節或聖誕節。程式會載入勞工處2026及2027年法定假日清單。</li>
+        <li>冬季選擇未知時，程式不會代選冬節或聖誕節；每周休息安排未知時，不會默認星期日。這些日期可先記錄有否上班，但須核對分類後才可計薪。</li>
         <li>在設定的「工資及膳食歷史」按生效日期核對各段條款。實際加薪／膳食變更與更正輸入錯誤分開記錄，先預覽再保存；原有結算及付款不會改寫。月中變更及未支援的平均工資計算仍須使用官方計算機另行核對。</li>
       </ol>
 
+      <h2>修改設定</h2>
+      <p>設定頁先顯示目前外傭，再按姓名及合約日期、工資及膳食歷史、工作及休息安排、假日日曆、資料私隱分組。「修改」只開啟表格，按「保存」才生效；取消會保留原設定。合約日期及假日薪酬條款的更正須填原因、預覽更改前後，再確認保存；更正歷史隨備份保留。</p>
+      <p>合約更正可能影響較早日期的估算，但不會改寫原有工作、安排、工資歷史、付款及已確認結算。新合約應另建檔案；按生效日期變更薪酬或休息條款，請使用各自的歷史編輯功能。顯示語言及匿名統計開關即時生效，旁邊會明確說明。PIN 可使用4至6位數字；在修改表格留空並保存可移除。</p>
+
       <h2>每日記錄</h2>
+      <p>請假時選「部分時間請假／缺勤」或「全日請假／缺勤」，再選普通無薪假、年假、病假／就診、產假、侍產假、工傷或其他類型。部分時間請填實際小時及分鐘，不會一律當作半日；不確定可明確選擇待核對。不要在備註填診斷或敏感醫療資料。</p>
+      <p>保存請假事實不代表核實假期資格、同意扣薪或計算假期餘額。此版本不自動計算這些月份的薪酬，請從「薪金」另行核對並記錄實際付款；過往請假對法定平均工資的影響亦須覆核。舊半日／全日標記原樣保留，須補核實際類型及時間，不再當作自動扣款。休息日／假日上的請假不會把該假期標為已享用。</p>
       <p>一般工作日不需要逐日輸入。請記錄請假、部分時段工作，並確認休息日及假日有否上班。沒有記錄的日期只是合約預設，並非已確認。外傭模式輸入的項目會先標記為待批准；批准前不能納入已確認結算。</p>
       <p>休息日工作必須屬自願，並按實際協議記錄現金金額或補回休息日。法定假日工作須提前48小時通知，並安排另定假日；付款不能取代假日。補假表格須填實際約定的工作開始時間與已作出通知的時間（均以香港時間輸入）；舊安排缺少時間須補核，不應猜填。</p>
+      <p>記錄法定假日上班並儲存後，按「記錄補假安排」繼續，或選擇稍後處理。關閉補假表格不會刪除已保存的工作；尚未安排的假期仍會列出。「另行更改休息日協議」是不同功能，不能代替法定假日補假。外傭模式的工作只在本裝置待僱主核對，不會自動傳送到另一部手機；批准後才繼續記錄補假。</p>
       <p>舊假日出現「待核對」時：到「設定 → 假日日曆 → 核對官方日曆」預覽缺少或不符的官方日期，再逐筆按「核對」補齊實際類型、原日期及通知／協議。更改冬節或聖誕節不會自動轉移原有補假協議；有衝突的安排仍須逐項處理。只可封存已核實錯誤或重複的一筆記錄，原資料保留於更改歷史。保存日曆不等於已放假或已付清；工作、付款及已確認結算均不改寫。</p>
 
       <h2>結算及付款</h2>
       <ol>
         <li>在「薪金」查看參考估算及法律檢查清單。</li>
         <li>先處理所有限制。首月／尾月、缺勤扣款、無薪休息日或其他未支援權利會被阻止，並連結至官方計算機。</li>
-        <li>所有已支援檢查通過後，按「預覽及確認結算」。預覽時可以取消；只有明確確認後才保存不可改写的版本。日後補記工作會另列差額，可填寫原因建立修訂版，原有結算及付款仍保留。</li>
+        <li>先按「核對工作記錄」，確認本月休息／假日實際有否工作，並處理待批准或無效記錄。一般工作日毋須逐日輸入，但確認前須核對請假及其他例外。尚未完結或未核對完整的月份，只可保存「預估草稿」，不會產生已確認結算或付款。</li>
+        <li>工資期完結、工作記錄及受支援的計算檢查通過後，按「預覽及確認結算」，再明確確認已核對本期資料。關閉預覽不會保存該預覽，亦不會刪除已有工作記錄。日後補記工作會另列差額，可填原因建立修訂版，原有結算及付款仍保留。</li>
         <li>實際付款後，再記錄金額、日期及方式；此功能不會轉帳。未支援的計算可記錄「另行核算後的實際付款」，但須填核算依據，不會標為 HelperPay 已確認計算。</li>
         <li>可附加付款截圖，再讓外傭確認收款。舊版本建立而沒有已確認計算明細的付款會明確標記為舊記錄。</li>
+        <li>僱主開啟收款／付款更正核對後，先把手機交給外傭。外傭可選 English 或繁體中文，再按「我是外傭 — 開始核對付款」。繼續或切換語言都不會確認收款，也不會更改僱主的App語言；已填姓名及PIN只在此表格內保留。取消不保存，失敗可原地重試。</li>
+        <li>外傭須核對實際收到的金額、付款日期及方式後才確認。姓名、備註、原因及附件保留原文。本機PIN不會驗證銀行到帳或遠端身份；完成後請把手機交回僱主。確認過的付款填錯時，使用更正流程，不能直接覆寫原確認。</li>
       </ol>
 
       <h2>工作及發薪待辦</h2>
-      <p>「今日」→「查看未完成待辦」可查看近7日、近30日及更早的漏記或發薪核對。過了當天不會自動消失，亦不會把合約預設當成已確認。已確認結算與現有資料一致且付款足夠時，工資待辦才完成；另行計算的月份，可在薪金頁明確記錄外部工資核對，須填完整應付金額、依據及已付清的確認。核對記錄隨薪酬備份保存；資料有變更會重新提醒，不會改寫舊核對或付款。</p>
-      <p>關閉提醒類別只會隱藏該類待辦，不會標為完成。網頁待辦須開啟網頁查看；手機 App 的系統通知另須主動啟用，並不保證準時送達。工資待辦不包括外傭確認收款或終止僱傭的其他權益。</p>
+      <p>「今日」→「查看未完成待辦」先分開「現在待辦」及「歷史待核對」，再按近7日、7至29天前及30天前或更早篩選；三個日期範圍不重疊。新檔案由今天開始追蹤，舊檔案有建立日期時按香港建立日區分，沒有可靠日期則全部仍列於現在待辦。可展開「追蹤日期及顯示選項」，更改目前外傭的開始日期；此選項隨備份保存，不會更改合約、薪金或通知。在開始日前已完結的工資月份列入歷史，即使提醒日在之後。歷史待辦可能仍有欠薪或尚欠補假，並非已完成或可忽略。</p>
+      <p>過了當天，漏記或發薪待辦不會自動消失，亦不會把合約預設當成已確認。工資期完結、工作記錄核對完整、已確認結算與現有資料一致且付款足夠時，工資待辦才完成。另行計算的月份，可展開薪金頁「我使用其他方式核算本月薪金」，記錄完整應付金額、依據及已付清的確認；這不取代工作記錄核對。預估草稿及核對記錄隨薪酬備份保存；資料有變更會重新提醒，不會改寫舊核對或付款。</p>
+      <p>關閉通知、個別通知類別或不允許通知，都不會隱藏未完成待辦。日期篩選只改變清單顯示，不代表完成。網頁待辦須開啟網頁查看，沒有背景提示；手機 App 的系統通知另須主動啟用，並不保證準時送達。工資待辦不包括外傭確認收款或終止僱傭的其他權益。</p>
+      <h2>直接選擇月份</h2>
+      <p>在日曆或薪金頁按月份標題，輸入年份並選擇月份，再按「查看此月份」。取消會留在原月份；「回到本月」按香港日期返回，示範則返回樣本月份。查看其他月份不會改動工作、結算或付款，合約以外的已保存薪金記錄仍可查閱。</p>
       <h2>私隱及備份</h2>
       <p>資料預設只儲存在裝置。匿名統計預設關閉，必須由你在設定中主動啟用。請定期匯出備份並保存在安全位置。詳情請閱讀<a href="privacy.html?lang=zh-HK" data-local-page="privacy.html">私隱政策</a>。</p>
 
@@ -64,28 +80,44 @@
       <h2>First setup</h2>
       <ol>
         <li>Have the ID 407 contract ready. Enter its signing date, two-year start date, monthly wage and food arrangement.</li>
+        <li>Use the actual first work day. Leave an unknown signed date or wage blank; select “need to check” for unagreed terms. Saving lets you record facts while pending details remain visible; unknown details are not confirmed payroll terms.</li>
+        <li>Explicitly choose whether wage and food terms have always been the same, changed, or need checking later. For changed terms, record only the known effective date of the current arrangement; earlier periods never inherit the current wage automatically.</li>
         <li>Select the real agreed terms for rest-day pay and compensation for voluntary rest-day work.</li>
         <li>Choose Winter Solstice or Christmas Day. The app loads the Labour Department’s 2026 and 2027 statutory-holiday lists.</li>
+        <li>An unknown winter choice does not default to either day, and an unknown weekly rest pattern does not default to Sunday. You can record whether work occurred, but its classification must be checked before payroll is confirmed.</li>
         <li>Review each effective period in Settings → Wage &amp; food history. Record actual changes separately from corrections of input mistakes, then preview and confirm. Existing statements and payments are retained. Mid-month changes and unsupported statutory average-wage calculations still require separate review with the official calculator.</li>
       </ol>
 
+      <h2>Changing settings</h2>
+      <p>Settings shows the current helper first, then groups names/contract dates, wage/food history, work/rest arrangements, holidays and data/privacy. Edit opens a form; only Save applies its changes. Cancel keeps the original settings. Correcting contract dates or holiday payment terms requires a reason and a before/after preview. Correction history is included in backups.</p>
+      <p>Contract-wide corrections can affect estimates for earlier dates, but do not rewrite work, arrangements, wage histories, payments or confirmed statements. Create another profile for a new contract. Use the separate history editors for effective-dated wage/rest changes. Display language and anonymous-statistics switches apply immediately, as labelled. PINs use4–6digits; leave a PIN blank in its editor and save to remove it.</p>
+
       <h2>Daily records</h2>
+      <p>For leave, choose Leave / absence for part of the day or the whole day, then select ordinary unpaid leave, annual leave, sick leave / medical absence, maternity, paternity, work injury or another category. Enter actual hours and minutes for part-day absence; it is never automatically treated as half a day. Explicitly select needs checking when unsure. Avoid diagnoses or sensitive medical details in notes.</p>
+      <p>Saving leave facts does not verify eligibility, authorise a deduction or calculate leave balances. This release does not calculate pay for these months; use Salary to review pay separately and record the actual payment. Prior leave can also require statutory average-wage review. Old half/full-day markers are retained and need their actual type and duration checked; they no longer generate automatic deductions. Leave entered on a rest day or holiday does not mark that entitlement as taken.</p>
       <p>Normal working days need no daily entry. Record leave and partial days, and confirm whether rest days and holidays were worked or taken off. An unmarked day is a contract default, not a confirmation. Entries made in Helper mode stay pending until the employer approves them; they cannot be included in a confirmed statement until approved.</p>
       <p>Rest-day work must be voluntary and use the actually agreed cash amount or substituted rest day. Statutory-holiday work needs 48 hours’ notice and an alternative holiday; cash cannot replace the holiday. Enter the actual agreed work start and notice already given in Hong Kong time. Check missing times in older arrangements rather than guessing them.</p>
+      <p>After saving statutory-holiday work, choose “Record holiday arrangement” or finish for now. Closing that form keeps the saved work; the unarranged holiday remains outstanding. “Separate rest-day agreement” is a different action and cannot replace the statutory holiday arrangement. Helper-mode entries await employer review on this device, not automatic delivery to another phone. Review the work first, then record the holiday arrangement.</p>
       <p>For older holidays marked for review, open Settings → Holiday calendar → Review official calendar to preview missing or mismatched official dates. Review each flagged record to enter its actual type, source day and notice/agreement. Changing Winter Solstice/Christmas does not transfer an existing day-off agreement. Archive only a checked incorrect or duplicate entry; its original stays in change history. Saving a calendar is not proof of time off or payment. Work, payments and confirmed statements remain unchanged.</p>
 
       <h2>Statements and payments</h2>
       <ol>
         <li>Open Salary to see a reference estimate and legal-check list.</li>
         <li>Resolve every blocker first. Partial first/final months, absence deductions, unpaid rest days and other unsupported entitlements link to the official calculator.</li>
-        <li>When supported checks pass, choose Preview and confirm statement. You may cancel the preview; only explicit confirmation saves an immutable version. Later work records appear as separate changes. Create a revision with a reason; previous statements and payment links remain intact.</li>
+        <li>Choose Check work records first. Confirm whether each rest day and holiday was worked or taken off, and resolve pending or invalid records. Normal working days need no daily entry, but you must check leave and other exceptions before confirming. An open or incomplete month can only be saved as an estimate draft, never as a confirmed statement or payment.</li>
+        <li>Once the wage period ends and the work-record and supported calculation checks pass, choose Preview and confirm statement, then explicitly confirm you reviewed the period. Closing the preview does not save it or delete existing work records. Later changes appear separately; create a revision with a reason. Previous statements and payment links remain intact.</li>
         <li>After making a payment, record its actual amount, date and method; this does not transfer money. Unsupported calculations can use Record an externally calculated payment with a calculation reference, but are not labelled HelperPay-confirmed calculations.</li>
         <li>Optionally attach a payment screenshot, then ask the helper to acknowledge receipt. Payments created by an older version without confirmed calculation details are clearly marked as legacy records.</li>
+        <li>When the employer opens a receipt/correction review, hand the phone to the helper. The helper chooses English or繁體中文, then I am the helper — review payment. Continuing or changing language does not acknowledge receipt or change the employer's app language. Entered name/PIN stays only in this form; Cancel saves nothing and a failed save can be retried.</li>
+        <li>The helper must check the actual amount received, payment date and method before confirming. Names, notes, reasons and evidence remain in their original language. A local PIN does not verify bank settlement or remote identity. Return the phone to the employer afterwards. Correct an acknowledged payment through its correction workflow, without overwriting the original acknowledgement.</li>
       </ol>
 
       <h2>Work and payday check-ins</h2>
-      <p>Today → Review outstanding tasks shows the last 7 days, last 30 days and older work/payday reviews. Missed tasks do not disappear after their day; defaults are not confirmations. Wage tasks complete when the current confirmed version matches the records and actual recorded payments cover it. For separately calculated months, explicitly record an external wage review in Salary: enter the full wage amount, calculation reference and confirmation it has been paid. Review records are included in payroll backups; changed records reopen the task without rewriting earlier reviews or payments.</p>
-      <p>Disabling a reminder category hides its tasks without completing them. Web check-ins require an open page; system notifications in the installed app require opt-in and are not guaranteed deadline alerts. Wage tasks do not complete helper receipt acknowledgement or other termination entitlements.</p>
+      <p>Today → Review outstanding tasks separates Current tasks from Earlier history to review. Filter each section by the last 7 days, 7–29 days ago, or 30+ days ago; the three ranges do not overlap. New profiles start tracking today. Older profiles use their Hong Kong creation date when available; without a reliable date all tasks stay in Current. Expand Tracking dates and display options to change the current helper’s start date. This preference is backed up and does not change employment, pay or notifications. Wage months ending before it appear in history even when their reminder is later. Historical tasks may still include unpaid wages or time off; they are not completed or safe to ignore.</p>
+      <p>Missed tasks do not disappear after their day; defaults are not confirmations. Wage tasks complete when the period has ended, work records are reviewed, the current confirmed version matches the records and actual recorded payments cover it. For separately calculated months, expand I used another method to calculate this month in Salary: enter the full wage amount, calculation reference and confirmation it has been paid. This does not replace checking work records. Estimate drafts and review records are included in payroll backups; changed records reopen the task without rewriting earlier reviews or payments.</p>
+      <p>Turning notifications or individual alert categories off, or denying notification permission, never hides outstanding tasks. Date filters only change the displayed list, not completion. Web check-ins require an open page and have no background alerts; system notifications in the installed app require opt-in and are not guaranteed deadline alerts. Wage tasks do not complete helper receipt acknowledgement or other termination entitlements.</p>
+      <h2>Jump to a month</h2>
+      <p>Tap the month heading in Calendar or Salary, enter a year, choose a month and select View this month. Cancel keeps the original month. Back to current month uses the Hong Kong date, or the sample date in demo mode. Navigation does not change work, statements or payments; saved salary history outside the current contract remains available.</p>
       <h2>Privacy and backups</h2>
       <p>Data stays on the device by default. Anonymous statistics are off by default and require your opt-in under Settings. Export backups regularly and keep them secure. Read the <a href="privacy.html?lang=en" data-local-page="privacy.html">Privacy Policy</a>.</p>
 
