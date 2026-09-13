@@ -8,6 +8,7 @@ The web app remains free, with no subscription, account signup or trial expiry. 
 
 ## September 2026 update
 
+- Existing helpers can start tracking from today without recreating earlier records. An approximate employment month is optional; the exact date is requested only when a supported legal calculation needs it.
 - Hong Kong Traditional Chinese and English, shorter guided setup that retains drafts when changing language, and an isolated sample demo.
 - Contract-specific calculation checks, official 2026–2027 statutory holiday options, explicit time-off arrangements, approval controls and confirmed statement versions. Previewing or cancelling a payment does not confirm a statement.
 - Effective-dated wage and food terms, holiday-data review, and rest-day changes that retain existing work and notes. Actual notifications and agreements must be recorded; the app does not invent them.
