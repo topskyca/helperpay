@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b6e4f">
   <title>HelperPay 使用指南 · User Guide</title>
-  <link rel="stylesheet" href="web/20260914-ux-13/app.css">
-  <script src="web/20260914-ux-13/language.js" defer></script>
+  <link rel="stylesheet" href="web/20260914-ux-14/app.css">
+  <script src="web/20260914-ux-14/language.js" defer></script>
   <style>
     .guide { max-width: 720px; margin: 0 auto; padding: 20px 14px 48px; }
     .guide h1 { font-size: 26px; }
@@ -31,7 +31,7 @@
         <li>準備 ID 407 合約，輸入簽署日期、兩年合約開始日期、月薪及膳食安排。</li>
         <li>首個工作日須填真實日期。未知簽署日期或月薪可留空；未商定的其他條款可選「需要核對」。保存後可先記錄實際情況，待核對清單會保留；未知資料不會當作已確認計薪條款。</li>
         <li>請明確選擇工資及膳食自入職起一直相同、曾經調整，或稍後核對。曾調整時，只記錄目前安排的已知生效日期，較早期間不會自動套用目前月薪。</li>
-        <li>按雙方實際協議選擇休息日是否有薪，以及休息日工作時的補償安排。</li>
+        <li>先選擇平常休息日是否已包括在月薪內；再分開記錄自願在休息日上班時的實際協議：沒有額外現金、額外現金金額，或另一天休息。香港法例沒有規定自動加一天日薪。</li>
         <li>選擇合約採用冬節或聖誕節。程式會載入勞工處2026及2027年法定假日清單。</li>
         <li>冬季選擇未知時，程式不會代選冬節或聖誕節；每周休息安排未知時，不會默認星期日。這些日期可先記錄有否上班，但須核對分類後才可計薪。</li>
         <li>在設定的「工資及膳食歷史」按生效日期核對各段條款。實際加薪／膳食變更與更正輸入錯誤分開記錄，先預覽再保存；原有結算及付款不會改寫。月中變更及未支援的平均工資計算仍須使用官方計算機另行核對。</li>
@@ -45,7 +45,7 @@
       <p>請假時選「部分時間請假／缺勤」或「全日請假／缺勤」，再選普通無薪假、年假、病假／就診、產假、侍產假、工傷或其他類型。部分時間請填實際小時及分鐘，不會一律當作半日；不確定可明確選擇待核對。不要在備註填診斷或敏感醫療資料。</p>
       <p>保存請假事實不代表核實假期資格、同意扣薪或計算假期餘額。此版本不自動計算這些月份的薪酬，請從「薪金」另行核對並記錄實際付款；過往請假對法定平均工資的影響亦須覆核。舊半日／全日標記原樣保留，須補核實際類型及時間，不再當作自動扣款。休息日／假日上的請假不會把該假期標為已享用。</p>
       <p>一般工作日不需要逐日輸入。請記錄請假、部分時段工作，並確認休息日及假日有否上班。沒有記錄的日期只是合約預設，並非已確認。外傭模式輸入的項目會先標記為待批准；批准前不能納入已確認結算。</p>
-      <p>休息日工作必須屬自願，並按實際協議記錄現金金額或補回休息日。法定假日工作須提前48小時通知，並安排另定假日；付款不能取代假日。補假表格須填實際約定的工作開始時間與已作出通知的時間（均以香港時間輸入）；舊安排缺少時間須補核，不應猜填。</p>
+      <p>休息日工作一般必須屬自願。法例不會自動加一天日薪；請按實際情況記錄沒有額外現金、已協議的額外現金，或另一天休息。法定假日工作須提前48小時通知，並安排另定假日；付款不能取代假日。補假表格須填實際約定的工作開始時間與已作出通知的時間（均以香港時間輸入）；舊安排缺少時間須補核，不應猜填。</p>
       <p>記錄法定假日上班並儲存後，按「記錄補假安排」繼續，或選擇稍後處理。關閉補假表格不會刪除已保存的工作；尚未安排的假期仍會列出。「另行更改休息日協議」是不同功能，不能代替法定假日補假。外傭模式的工作只在本裝置待僱主核對，不會自動傳送到另一部手機；批准後才繼續記錄補假。</p>
       <p>舊假日出現「待核對」時：到「設定 → 假日日曆 → 核對官方日曆」預覽缺少或不符的官方日期，再逐筆按「核對」補齊實際類型、原日期及通知／協議。更改冬節或聖誕節不會自動轉移原有補假協議；有衝突的安排仍須逐項處理。只可封存已核實錯誤或重複的一筆記錄，原資料保留於更改歷史。保存日曆不等於已放假或已付清；工作、付款及已確認結算均不改寫。</p>
 
@@ -84,7 +84,7 @@
         <li>Have the ID 407 contract ready. Enter its signing date, two-year start date, monthly wage and food arrangement.</li>
         <li>Use the actual first work day. Leave an unknown signed date or wage blank; select “need to check” for unagreed terms. Saving lets you record facts while pending details remain visible; unknown details are not confirmed payroll terms.</li>
         <li>Explicitly choose whether wage and food terms have always been the same, changed, or need checking later. For changed terms, record only the known effective date of the current arrangement; earlier periods never inherit the current wage automatically.</li>
-        <li>Select the real agreed terms for rest-day pay and compensation for voluntary rest-day work.</li>
+        <li>Select whether normal rest days are included in monthly pay. Separately record what was actually agreed for voluntary rest-day work: no extra cash, an extra cash amount, or another rest day. Hong Kong law does not impose one automatic day-rate payment.</li>
         <li>Choose Winter Solstice or Christmas Day. The app loads the Labour Department’s 2026 and 2027 statutory-holiday lists.</li>
         <li>An unknown winter choice does not default to either day, and an unknown weekly rest pattern does not default to Sunday. You can record whether work occurred, but its classification must be checked before payroll is confirmed.</li>
         <li>Review each effective period in Settings → Wage &amp; food history. Record actual changes separately from corrections of input mistakes, then preview and confirm. Existing statements and payments are retained. Mid-month changes and unsupported statutory average-wage calculations still require separate review with the official calculator.</li>
@@ -98,7 +98,7 @@
       <p>For leave, choose Leave / absence for part of the day or the whole day, then select ordinary unpaid leave, annual leave, sick leave / medical absence, maternity, paternity, work injury or another category. Enter actual hours and minutes for part-day absence; it is never automatically treated as half a day. Explicitly select needs checking when unsure. Avoid diagnoses or sensitive medical details in notes.</p>
       <p>Saving leave facts does not verify eligibility, authorise a deduction or calculate leave balances. This release does not calculate pay for these months; use Salary to review pay separately and record the actual payment. Prior leave can also require statutory average-wage review. Old half/full-day markers are retained and need their actual type and duration checked; they no longer generate automatic deductions. Leave entered on a rest day or holiday does not mark that entitlement as taken.</p>
       <p>Normal working days need no daily entry. Record leave and partial days, and confirm whether rest days and holidays were worked or taken off. An unmarked day is a contract default, not a confirmation. Entries made in Helper mode stay pending until the employer approves them; they cannot be included in a confirmed statement until approved.</p>
-      <p>Rest-day work must be voluntary and use the actually agreed cash amount or substituted rest day. Statutory-holiday work needs 48 hours’ notice and an alternative holiday; cash cannot replace the holiday. Enter the actual agreed work start and notice already given in Hong Kong time. Check missing times in older arrangements rather than guessing them.</p>
+      <p>Rest-day work must normally be voluntary. The law does not automatically add one day’s salary: record no extra cash, the cash amount actually agreed, or another agreed rest day. Statutory-holiday work needs 48 hours’ notice and an alternative holiday; cash cannot replace the holiday. Enter the actual agreed work start and notice already given in Hong Kong time. Check missing times in older arrangements rather than guessing them.</p>
       <p>After saving statutory-holiday work, choose “Record holiday arrangement” or finish for now. Closing that form keeps the saved work; the unarranged holiday remains outstanding. “Separate rest-day agreement” is a different action and cannot replace the statutory holiday arrangement. Helper-mode entries await employer review on this device, not automatic delivery to another phone. Review the work first, then record the holiday arrangement.</p>
       <p>For older holidays marked for review, open Settings → Holiday calendar → Review official calendar to preview missing or mismatched official dates. Review each flagged record to enter its actual type, source day and notice/agreement. Changing Winter Solstice/Christmas does not transfer an existing day-off agreement. Archive only a checked incorrect or duplicate entry; its original stays in change history. Saving a calendar is not proof of time off or payment. Work, payments and confirmed statements remain unchanged.</p>
 

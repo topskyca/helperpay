@@ -1,6 +1,6 @@
-/* Free web release 20260914-ux-13; atomic offline package. */
-const VERSION = 'helperpay-web-20260914-ux-13';
-const ASSETS = ["index.html","demo.html","guide.html","privacy.html","icon-32.png","icon-180.png","icon-192.png","icon-512.png","manifest.webmanifest","web/20260914-ux-13/analytics.js","web/20260914-ux-13/app.css","web/20260914-ux-13/app.js","web/20260914-ux-13/compliance.js","web/20260914-ux-13/contract-history.js","web/20260914-ux-13/demo-app.js","web/20260914-ux-13/demo-entry.js","web/20260914-ux-13/demo.css","web/20260914-ux-13/engine.js","web/20260914-ux-13/entry.js","web/20260914-ux-13/holiday-review.js","web/20260914-ux-13/holidays.js","web/20260914-ux-13/i18n.js","web/20260914-ux-13/language.js","web/20260914-ux-13/legal-model.js","web/20260914-ux-13/payment-ledger.js","web/20260914-ux-13/store.js","web/20260914-ux-13/web.css"];
+/* Free web release 20260914-ux-14; atomic offline package. */
+const VERSION = 'helperpay-web-20260914-ux-14';
+const ASSETS = ["index.html","demo.html","guide.html","privacy.html","icon-32.png","icon-180.png","icon-192.png","icon-512.png","manifest.webmanifest","web/20260914-ux-14/analytics.js","web/20260914-ux-14/app.css","web/20260914-ux-14/app.js","web/20260914-ux-14/compliance.js","web/20260914-ux-14/contract-history.js","web/20260914-ux-14/demo-app.js","web/20260914-ux-14/demo-entry.js","web/20260914-ux-14/demo.css","web/20260914-ux-14/engine.js","web/20260914-ux-14/entry.js","web/20260914-ux-14/holiday-review.js","web/20260914-ux-14/holidays.js","web/20260914-ux-14/i18n.js","web/20260914-ux-14/language.js","web/20260914-ux-14/legal-model.js","web/20260914-ux-14/payment-ledger.js","web/20260914-ux-14/store.js","web/20260914-ux-14/web.css"];
 // No skipWaiting() on install: with no active worker this one activates by
 // itself, and when one IS active, claiming the page would leave it running the
 // previous release's calculation rules. It waits until the open page offers a
