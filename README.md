@@ -30,6 +30,6 @@ Existing payment records are retained. The calculator does not invent missing co
 
 HelperPay is a reference tracker for Hong Kong ID 407 foreign domestic-helper records, not legal advice, a bank/payment-transfer service or an authoritative payroll product. Unsupported calculations are blocked from finalized statements and directed to [Labour Department's reference calculator](https://www.lr.labour.gov.hk/web/en/calculator/index.html). Full statutory entitlement coverage and professional legal review are not implied.
 
-The active release is identified in `web-release.json`. Its active scripts are under `web/20260916-ux-15/`; older versioned assets and root `js/` and `css/` files are retained for old cached pages and are not the active calculator. The website service worker caches a complete versioned release, without caching or uploading payroll records. A software rollback does not restore or alter browser payroll data; retain your backup.
+The active release is identified in `web-release.json`. Its active scripts are under `web/20260916-ux-16/`; older versioned assets and root `js/` and `css/` files are retained for old cached pages and are not the active calculator. The website service worker caches a complete versioned release, without caching or uploading payroll records. A software rollback does not restore or alter browser payroll data; retain your backup.
 
 Support: [yonghe@affluentbyte.hk](mailto:yonghe@affluentbyte.hk)
