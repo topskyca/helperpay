@@ -2,9 +2,9 @@
 
 [Open HelperPay](https://topskyca.github.io/helperpay/) · [Guide](https://topskyca.github.io/helperpay/guide.html) · [Privacy](https://topskyca.github.io/helperpay/privacy.html)
 
-The web app remains free, with no subscription, account signup or trial expiry. Native Android/iOS membership is separate and is not loaded by this website.
+The web app remains free, with no subscription, account signup or trial expiry. Native Android/iOS subscriptions are separate and are not loaded by this website.
 
-網頁版繼續免費，毋須訂閱或註冊，亦沒有試用期限。Android／iOS 會籍屬另一版本，不會載入此網站。
+網頁版繼續免費，毋須訂閱或註冊，亦沒有試用期限。Android／iOS 訂閱屬另一版本，不會載入此網站。
 
 ## September 2026 update
 
