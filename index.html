@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,15 +7,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="HelperPay">
-  <title>HelperPay — HK domestic helper salary tracker</title>
+  <title>HelperPay — 工人姐姐薪金助手</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="icon-180.png" sizes="180x180">
-  <link rel="stylesheet" href="web/20260922-ux-21/app.css">
-<link rel="stylesheet" href="web/20260922-ux-21/web.css"><meta name="helperpay-build" content="20260922-ux-21"></head>
+  <link rel="stylesheet" href="web/20260923-ux-22/app.css">
+<link rel="stylesheet" href="web/20260923-ux-22/web.css"><meta name="helperpay-build" content="20260923-ux-22"></head>
 <body>
   <header id="topbar">
-    <div class="brand">Helper<span>Pay</span></div><span class="web-free-label">免費網頁版 · Free web</span>
+    <div class="brand-area">
+      <div class="brand">Helper<span>Pay</span></div><span class="web-free-label">免費網頁版 · Free web</span>
+      <button id="helper-switch" class="helper-switch" type="button" style="display:none" aria-label="切換工人姐姐"></button>
+    </div>
     <div class="topbar-actions">
       <button id="language-toggle" class="header-language" type="button" data-language="zh-HK" aria-label="Switch language">繁中</button>
       <button id="mode-chip" class="mode-chip" style="display:none" aria-label="Employer">
@@ -30,17 +33,17 @@
 
   <div id="sheet-root"></div>
 
-  <script src="web/20260922-ux-21/analytics.js"></script>
-  <script src="web/20260922-ux-21/legal-model.js"></script>
-  <script src="web/20260922-ux-21/contract-history.js"></script>
-  <script src="web/20260922-ux-21/payment-ledger.js"></script>
-  <script src="web/20260922-ux-21/engine.js"></script>
-  <script src="web/20260922-ux-21/holidays.js"></script>
-  <script src="web/20260922-ux-21/holiday-review.js"></script>
-  <script src="web/20260922-ux-21/compliance.js"></script>
-  <script src="web/20260922-ux-21/store.js"></script>
-  <script src="web/20260922-ux-21/i18n.js"></script>
-  <script src="web/20260922-ux-21/language.js"></script>
-  <script src="web/20260922-ux-21/entry.js" data-web-app="web/20260922-ux-21/app.js"></script>
+  <script src="web/20260923-ux-22/analytics.js"></script>
+  <script src="web/20260923-ux-22/legal-model.js"></script>
+  <script src="web/20260923-ux-22/contract-history.js"></script>
+  <script src="web/20260923-ux-22/payment-ledger.js"></script>
+  <script src="web/20260923-ux-22/engine.js"></script>
+  <script src="web/20260923-ux-22/holidays.js"></script>
+  <script src="web/20260923-ux-22/holiday-review.js"></script>
+  <script src="web/20260923-ux-22/compliance.js"></script>
+  <script src="web/20260923-ux-22/store.js"></script>
+  <script src="web/20260923-ux-22/i18n.js"></script>
+  <script src="web/20260923-ux-22/language.js"></script>
+  <script src="web/20260923-ux-22/entry.js" data-web-app="web/20260923-ux-22/app.js"></script>
 </body>
 </html>
